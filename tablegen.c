@@ -10,14 +10,11 @@
 // Method signatures, todo: fix manual inclusion?
 void show_menu1();
 void show_menu2();
-void show_array();
+void select_columns();
 
 int main(int argc, char **argv) {
 
     int choice = 0;      // 1 or 2 for show_menu1(). Automatic allocation so no free needed
-    int count = 0;       // Initialize a count to keep track of the number of integers read
-    char *inputColumns = NULL;      // Declare a pointer to store the "raw" char gotten from scanf.
-    int *columns = NULL;            // Declare a pointer to store the casted integers used for manipulations
 
     // TODO: remove this before submitting
     setbuf(stdout, 0);
@@ -30,36 +27,8 @@ int main(int argc, char **argv) {
 
     if (choice == 1) {
         show_menu2();
+        select_columns();
 
-        // Allocate memory for user input. 8 + 7 commas maximum.
-        inputColumns = (char *) malloc(sizeof(int) * 16);  // Allocate memory for user input
-
-        // User input of the columns
-        scanf("%s", inputColumns);
-
-        // Use strtok to return a pointer to the first CHARACTER of the first token.
-        char *token = strtok(inputColumns, ",");
-
-        // Loop until the last token
-        while (token != NULL) {
-            // Convert to a long int the token found by strtok
-            int columnValue = (int) strtol(token, NULL, 10);
-
-            // Increase the size of the array with the number of digits entered by the user
-            columns = (int *) realloc(columns, (count + 1) * sizeof(int));
-
-            // Set the digit entered at the index
-            columns[count] = columnValue;
-
-            // Increment to keep track of the indexes for future tokens
-            count++;
-
-            // Repeat loop
-            token = strtok(NULL, ",");
-        }
-
-        // Deallocation needed due to malloc (dynamic)
-        free(inputColumns);  // Deallocate user input memory
     }
     else if (choice == 2)
     {
@@ -69,8 +38,6 @@ int main(int argc, char **argv) {
     // Terminate program successfully
     return 0;
 }
-
-
 
 /**
  * Shows the option to start generating or exiting the program when it is first executed
@@ -104,6 +71,41 @@ void show_menu2(int choice) {
     printf("Enter column list (comma separated, no spaces):");
 }
 
+void select_columns() {
+    int count = 0;       // Initialize a count to keep track of the number of integers read
+    char *inputColumns = NULL;      // Declare a pointer to store the "raw" char gotten from scanf.
+    int *columns = NULL;            // Declare a pointer to store the casted integers used for manipulations
+
+    // Allocate memory for user input. 8 + 7 commas maximum.
+    inputColumns = (char *) malloc(sizeof(int) * 16);  // Allocate memory for user input
+
+    // User input of the columns
+    scanf("%s", inputColumns);
+
+    // Use strtok to return a pointer to the first CHARACTER of the first token.
+    char *token = strtok(inputColumns, ",");
+
+    // Loop until the last token
+    while (token != NULL) {
+        // Convert to a long int the token found by strtok
+        int columnValue = (int) strtol(token, NULL, 10);
+
+        // Increase the size of the array with the number of digits entered by the user
+        columns = (int *) realloc(columns, (count + 1) * sizeof(int));
+
+        // Set the digit entered at the index
+        columns[count] = columnValue;
+
+        // Increment to keep track of the indexes for future tokens
+        count++;
+
+        // Repeat loop
+        token = strtok(NULL, ",");
+    }
+
+    // Deallocation needed due to malloc (dynamic)
+    free(inputColumns);  // Deallocate user input memory
+}
 
 
 /*   if (choice == 1)
