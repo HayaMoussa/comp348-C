@@ -10,8 +10,8 @@ void test(int *columns) {
 
 void generate_userID(int *bufArray, int rowCount) {
     //int arrayID[rowCount]; // todo: should I include 1 for NULL?
-    int ID = 1; // index in list will always be ID-1 as list starts at 0.
-    int i;       // for loop until row count
+    int ID = 1;  // Index in list will always be ID-1 as list starts at 0.
+    int i;       // For loop until row count
 
     for (i = 0; i < rowCount; ++i)
     {
@@ -19,7 +19,7 @@ void generate_userID(int *bufArray, int rowCount) {
         bufArray[i] = ID;
 
         // Print the value incremented : TODO: remove after debugging
-        printf("int value = %d, Character = %c\n", ID);
+        printf("int value = %d\n", ID);
 
         //Increment
         ID++;

@@ -24,6 +24,7 @@ int main(int argc, char **argv) {
     int choice = 0;      // 1 or 2 for show_menu1(). Automatic allocation so no free needed
     int rowCount = 0;
     // Declare string outputFile = NULL using malloc since we do not know length of name
+    int *columns = (int *)malloc(sizeof(int)); // NEED TO ALLOCATE END OF STRING!! +1
 
 
     // TODO: remove this before submitting
@@ -37,12 +38,23 @@ int main(int argc, char **argv) {
 
     if (choice == 1) {
         show_menu2();
-        select_columns();
+        select_columns(columns);
 
         printf("Enter row count (1 < n < 1M):");
         scanf("%d", &rowCount);
 
         // TODO: Call Sort
+        int i;       // For loop of column values
+        for (i = 0; i < (sizeof(columns) / sizeof(int)); ++i) // size of returns the size of THE pointer so need division
+        {
+            switch(columns[i])
+            {
+                case 1:
+                    printf("Int value stored = %d\n", columns[i]);
+                    break;
+            }
+        }
+
         // Create buffer using automatic allocation size is known - No free (or malloc) needed here
         int arrayID[rowCount] ; // Will be filled by function
         generate_userID(arrayID, rowCount);
@@ -94,10 +106,10 @@ void show_menu2() {
     printf("Enter column list (comma separated, no spaces):");
 }
 
-void select_columns() {
-    int count = 0;       // Initialize a count to keep track of the number of integers read, starts at 0
+void select_columns(int *columns) {
+    int count = 0;                  // Initialize a count to keep track of the number of integers read, starts at 0
     char *inputColumns = NULL;      // Declare a pointer to store the "raw" char gotten from scanf.
-    int *columns = NULL;            // Declare a pointer to store the casted integers used for manipulations - acts as main array
+    //int *columns = NULL;            // Declare a pointer to store the casted integers used for manipulations - acts as main array
 
     // Allocate memory for user input. 8 + 7 commas maximum.
     inputColumns = (char *) malloc(sizeof(int) * 16);  // Allocate memory for user input
@@ -187,7 +199,6 @@ void select_columns() {
 
          /*
           * Next time I work todo
-          *     - Commit
           *     - See why columns doesn't have a malloc in the main as the tokens entered are currently lost
           *     - Commit
           *     - Create a switch for the different options
