@@ -10,11 +10,13 @@
 
 // User-defined
 #include "generate.h"
+#include "io.h"
 
 // Method signatures, todo: fix manual inclusion?
 void show_menu1();
 void show_menu2();
 void select_columns();
+void select_outputName();
 
 //TODO: Remove this constant if not used
 #define ASCIIINT 48
@@ -26,6 +28,9 @@ int main(int argc, char **argv) {
     // Declare string outputFile = NULL using malloc since we do not know length of name
     int *columns = (int *)malloc(sizeof(int)); // NEED TO ALLOCATE END OF STRING!! +1
 
+    // TODO: DO I NEED THIS
+    //char *outputFile = (char *)malloc(sizeof(char));  // NEED TO ALLOCATE END OF STRING!! +1;
+
 
     // TODO: remove this before submitting
     setbuf(stdout, 0);
@@ -34,16 +39,19 @@ int main(int argc, char **argv) {
     show_menu1(choice);
     
 	// User input for main menu as an int
-	scanf("%d", &choice);
+    fscanf(stdin,"%d", &choice);
 
     if (choice == 1) {
         show_menu2();
+
+        // User input for the columns to generate
         select_columns(columns);
 
+        // User input for the number of columns generated in the files
         printf("Enter row count (1 < n < 1M):");
         scanf("%d", &rowCount);
 
-        // TODO: Call Sort
+        // Looping throught the "array" of columns saved in select_columns to generate
         int i;       // For loop of column values
         for (i = 0; i < (sizeof(columns) / sizeof(int)); ++i) // size of returns the size of THE pointer so need division
         {
@@ -51,19 +59,16 @@ int main(int argc, char **argv) {
             {
                 case 1:
                     printf("Int value stored = %d\n", columns[i]);
+                    // Create buffer using automatic allocation size is known - No free (or malloc) needed here
+                    int arrayID[rowCount] ; // Will be filled by function
+                    generate_userID(arrayID, rowCount);
                     break;
             }
         }
 
-        // Create buffer using automatic allocation size is known - No free (or malloc) needed here
-        int arrayID[rowCount] ; // Will be filled by function
-        generate_userID(arrayID, rowCount);
-
-
-
+        // TODO: Figure out how to insert a string
         printf("Enter output file name (no suffix):");
-        scanf("%s", &rowCount);
-
+        select_outputName();
     }
     else if (choice == 2)
     {
@@ -145,9 +150,19 @@ void select_columns(int *columns) {
     free(inputColumns);  // Deallocate user input memory
 }
 
+void select_outputName() {
+    char filename[256]; // Assuming a maximum file name size of 255 characters
+    printf("Enter the file name: ");
+    if (fscanf(stdin, "%255s", filename) == 1) { // limit to 255 characters
+        printf("File name entered: %s\n", filename);
+
+        //scanf("%s", &outputFile);
+        //printf("output file entered= %s\n", outputFile);
+        //outputFile = (char *) realloc(outputFile, (count + 1) * sizeof(int));
+    }
+}
+
 // TODO: void summarize()
-
-
 
 
 /*   if (choice == 1)
@@ -196,11 +211,10 @@ void select_columns(int *columns) {
 
     }*/
 
-
-         /*
-          * Next time I work todo
-          *     - See why columns doesn't have a malloc in the main as the tokens entered are currently lost
-          *     - Commit
-          *     - Create a switch for the different options
-          *     - Commit
-          * */
+/*
+*  Next time I work todo
+*     - See why columns doesn't have a malloc in the main as the tokens entered are currently lost
+*     - Commit
+*     - Create a switch for the different options
+*     - Commit
+* */
