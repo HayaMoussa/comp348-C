@@ -22,11 +22,12 @@ void read_file(char *filename, int maxRows, char buffer[maxRows]) {
         // Read the file
         fgets(buffer, sizeof(buffer), file);
 
+        // todo: Why is this skipping the first letter in Windows? Remove this later anyways but it used to work? I think it is related to Windows
         // source for strtok idea: https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
         printf("%s", strtok(buffer, "\n")); // todo: remove any new line character
 
         // Print comma if not last element
-        if (countRows!=maxRows-1) {
+        if (countRows!=(maxRows-1)) {
             printf(",");
         }
 
@@ -34,24 +35,20 @@ void read_file(char *filename, int maxRows, char buffer[maxRows]) {
     }
 
     fclose(file);
-
-    //TODO: Should I return stuff
-    //return buffer[maxRows];
 }
 
 void write_file(char *filename, int *columns, int rowCount) {
     // Open the file for writing and overwrite if needed
     FILE *file = fopen(filename, "wt");
 
-    /************************
-     * HEADER GENERATION
-     ************************/
     // Looping through the "array" of columns saved in select_columns to generate header
-    int columnIndex;       // For loop of column values
+    int columnIndex;        // For loop of column values
+    int rowWritten;         // For loop of rows (includes header)
+
+    // How many columns to loop
     int max = sizeof(columns) / sizeof(int);
 
     // TODO: Teacher used fput? I used fprintf for it's formatting options.
-    int rowWritten;
     for (rowWritten = -1; rowWritten < rowCount; ++rowWritten) // starts at -1 for row header.
     {
         // Looping through the "array" of columns saved in select_columns to generate data
@@ -77,7 +74,7 @@ void write_file(char *filename, int *columns, int rowCount) {
                     }
                     else
                     {
-                        fprintf(file, "NOPE");
+                        fprintf(file, "%c", arrayID[rowWritten]);
                     }
                     break;
                 case 3: // Last Name

@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h> // for clear
 #include <string.h> // for strtok
+#include <time.h> // for srand time
+
 
 // User-defined
 #include "generate.h"
@@ -24,9 +26,20 @@ void select_outputName();
 //TODO: Remove this if no global variable used
 //extern int rowCount;
 int *arrayID; // Define the pointer (it's uninitialized)
+char *arrayFirstName; // Define the pointer (it's uninitialized)
 
 
 int main(int argc, char **argv) {
+    // TODO: remove this before submitting
+    setbuf(stdout, 0);
+
+    // Create a seed for every execution used to generate random
+    srand(time(NULL));
+    /*
+    // Generate a random number
+    int rdm = generate_randomNumber(0,100);
+    printf("%d", rdm);
+     */
 
     int choice = 0;      // 1 or 2 for show_menu1(). Automatic allocation so no free needed
     int rowCount = 0;
@@ -36,8 +49,7 @@ int main(int argc, char **argv) {
     // TODO: DO I NEED THIS
     //char *outputFile = (char *)malloc(sizeof(char));  // NEED TO ALLOCATE END OF STRING!! +1;
 
-    // TODO: remove this before submitting
-    setbuf(stdout, 0);
+
 
     // Call method to show menu
     show_menu1(choice);
@@ -72,28 +84,23 @@ int main(int argc, char **argv) {
                 case 1: {
                     printf("User ID");
 
-                    // NOTE: AUTOMATIC ALLOCATION WILL NOT WORK HERE! CANNOT HAVE VARIABLE LENGTH AS A GLOBAL VARIABLE
-                    // Create buffer using automatic allocation size is known - No free (or malloc) needed here
-                    //  ; // Will be filled by function
                     // Automatic allocation would not work here since global variables cannot have a variable length. E.g.int arrayID[rowCount]
-
                     // Need to dynamically allocate space - Free needed here
                     arrayID = (int *) malloc(rowCount * sizeof(int)); // Dynamically allocate memory
-                    generate_userID(rowCount);
-
-                    // TODO: WRITE TO FILE
-                    // Adding the .csv suffix when writing file
-                    write_file(strcat(filename, ".csv"), columns, rowCount);
-
-                    // Free the space for previous malloc
-                    free(arrayID);
+                    generate_userID(rowCount); //arrayID will be filled by function, global variable
                     break;
-
                 }
 
-                case 2:
-                    printf("First Name");
+                case 2: {
+                    // No free needed since automatic allocation
+                    //char arrayFirstName[rowCount];
+
+                    // Need to dynamically allocate space - Free needed here
+                    arrayFirstName = (char *) malloc(rowCount * sizeof(char)); // Dynamically allocate memory
+                    generate_firstName(rowCount); //arrayID will be filled by function, global variable
                     break;
+                }
+
                 case 3:
                     printf("Last Name");
                     break;
@@ -122,11 +129,20 @@ int main(int argc, char **argv) {
 
         // Adding the .csv suffix when writing file
         //write_file(strcat(filename, ".csv"), columns);
+
+        // TODO: WRITE TO FILE
+        // Adding the .csv suffix when writing file
+        write_file(strcat(filename, ".csv"), columns, rowCount);
+
     }
     else if (choice == 2)
     {
         printf ("Goodbye and thanks for using TableGen\n");
     }
+
+    // Free the space for previous malloc
+    free(arrayID);
+    free(arrayFirstName);
 
     // Terminate program successfully
     return 0;

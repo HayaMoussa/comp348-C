@@ -1,6 +1,9 @@
 // Libraries
 #include <stdio.h>
+#include <stdlib.h> //for rand()
 #include "generate.h"
+#include "io.h"
+
 
 void test(int *columns) {
     printf("int value = %d, Character = %c\n", columns[0], columns[0]);
@@ -20,7 +23,6 @@ void generate_userID(int rowCount) {
         //bufArray[i] = ID;
         arrayID[i] = ID; // Declare a pointer to an int array
 
-
         // Print the value incremented : TODO: remove after debugging
         printf("int value = %d\n", ID);
 
@@ -31,5 +33,37 @@ void generate_userID(int rowCount) {
     // return array to main: https://stackoverflow.com/questions/16604631/return-integer-array-from-function
     // https://stackoverflow.com/questions/11656532/returning-an-array-using-c
     // return arrayID;
+}
+
+/**
+ * Generates a random number within an inclusive range
+ * @param min (inclusive)
+ * @param max (inclusive)
+ * @return random integer within the range provided
+ */
+//inclusive for min and max
+int generate_randomNumber(int min, int max) {
+    int randomNumber;
+    randomNumber = rand() % max+1;
+    return randomNumber;
+}
+
+void generate_firstName(int rowCount)
+{
+    int randomNameIndex = generate_randomNumber(0,100);
+
+    // TODO: For windows
+    read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", rowCount, arrayFirstName);
+
+    // TODO: For Linux
+    //read_file("./first_names.txt", rowCount, arrayFirstName);
+
+    printf("%c",arrayFirstName[randomNameIndex]); // todo: should this be c or s?
 
 }
+
+/* AFTER CLASS:
+ * - Generate a random name using generate_randomNumber().
+ * - Change the code for it in io.c
+ * - Adjust main
+ * */
