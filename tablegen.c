@@ -31,6 +31,7 @@ int main(int argc, char **argv) {
     // TODO: DO I NEED THIS
     //char *outputFile = (char *)malloc(sizeof(char));  // NEED TO ALLOCATE END OF STRING!! +1;
 
+    test2();
 
     // TODO: remove this before submitting
     setbuf(stdout, 0);
@@ -68,7 +69,23 @@ int main(int argc, char **argv) {
 
         // TODO: Figure out how to insert a string
         printf("Enter output file name (no suffix):");
-        select_outputName();
+        char filename[256]; // Assuming a maximum file name size of 255 characters
+        if (fscanf(stdin, "%255s", filename) == 1) { // limit to 255 characters
+            printf("File name entered: %s\n", filename);
+        }
+            //select_outputName();
+
+        // TODO: Continue here at home on sofa
+        /*
+        char filename[100]; // Assuming a maximum filename length of 99 characters
+        printf("Enter the file name: ");
+        if (scanf("%99s", filename) != 1) {
+            printf("Invalid input for the file name.\n");
+            return 1;
+        }*/
+
+        read_file(filename);
+
     }
     else if (choice == 2)
     {
@@ -149,19 +166,21 @@ void select_columns(int *columns) {
     // Deallocation needed due to malloc (dynamic)
     free(inputColumns);  // Deallocate user input memory
 }
-
+/*
 void select_outputName() {
-    char filename[256]; // Assuming a maximum file name size of 255 characters
     printf("Enter the file name: ");
     if (fscanf(stdin, "%255s", filename) == 1) { // limit to 255 characters
         printf("File name entered: %s\n", filename);
+
+        //read_file(filename);
 
         //scanf("%s", &outputFile);
         //printf("output file entered= %s\n", outputFile);
         //outputFile = (char *) realloc(outputFile, (count + 1) * sizeof(int));
     }
-}
 
+}
+*/
 // TODO: void summarize()
 
 

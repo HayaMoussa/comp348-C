@@ -1,11 +1,12 @@
-// Libraries
-#include <stdio.h>
-#include "generate.h"
 
-// Include guards
-#ifndef FUNCTIONS_H_INCLUDED
-#define FUNCTIONS_H_INCLUDED
+#ifndef COMP348_IOO_H
+#define COMP348_IOO_H
 
-void test(int *columns);
+void test2();
 
-#endif
+void read_file(char *filename);
+
+#endif //COMP348_IOO_H
+
+
+
