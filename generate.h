@@ -5,6 +5,8 @@
 #ifndef FUNCTIONS_H_INCLUDED
 #define FUNCTIONS_H_INCLUDED
 
+#define MAX_FIRSTNAMES 1000
+
 extern int *arrayID; // Declare a pointer to an int array
 extern char **arrayFirstName;
 
@@ -12,6 +14,8 @@ extern char **arrayFirstName;
 void test(int *columns);
 
 void generate_userID(int rowCount);
+
+char *selectRandomName(char **names, int count);
 
 void generate_firstName();
 
@@ -27,5 +31,4 @@ void generate_SIN();
 
 void generate_password();
 
-int generate_randomNumber(int min, int max);
 #endif

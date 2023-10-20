@@ -1,9 +1,11 @@
 // Libraries
 #include <stdio.h>
 #include <stdlib.h> // for malloc
-#include "io.h"
-
 #include <string.h>
+
+// User-defined
+#include "generate.h"
+#include "io.h"
 
 
 void read_file(char *filename, int maxRows, char **buffer) {
@@ -19,12 +21,11 @@ void read_file(char *filename, int maxRows, char **buffer) {
     int countRows;
     for (countRows = 0; countRows < maxRows; ++countRows) {
         // Create space for an array of characters for each row (index)
-        buffer[countRows] = (char *) malloc(64); // Assuming a maximum line length of 64 bytes
+        buffer[countRows] = (char *) malloc(maxRows); // Assuming a maximum line length of 64 bytes
 
-        //TODO: Should I realloc?
 
         // Exit the loop if there are no more line to read
-        if (fgets(buffer[countRows], 255, file) == NULL) {
+        if (fgets(buffer[countRows], maxRows, file) == NULL) {
             break; // Exit the loop if there are no more lines
         }
 
@@ -80,7 +81,8 @@ void write_file(char *filename, int *columns, int rowCount) {
                     }
                     else
                     {
-                        fprintf(file, "%s", arrayFirstName[rowWritten]);
+                        char *randomFirstName = selectRandomName(arrayFirstName, MAX_FIRSTNAMES);
+                        fprintf(file, "%s", randomFirstName);
                     }
                     break;
                 case 3: // Last Name

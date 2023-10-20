@@ -21,11 +21,16 @@ void select_columns();
 void select_outputName();
 
 //TODO: Remove this constant if not used
-#define ASCIIINT 48
+#define MAX_FIRSTNAMES 1000
 
 //TODO: Remove this if no global variable used
 //extern int rowCount;
+
+// Lists to write with
 int *arrayID; // Define the pointer (it's uninitialized)
+char *firstNames;
+
+// Lists to read with
 char **arrayFirstName; // Define the pointer (it's uninitialized)
 
 
@@ -92,12 +97,26 @@ int main(int argc, char **argv) {
                 }
 
                 case 2: {
-                    // No free needed since automatic allocation
-                    //char arrayFirstName[rowCount];
+                    // Need to dynamically allocate space - Free needed later
+                    arrayFirstName = (char **) malloc(MAX_FIRSTNAMES * sizeof(char *)); // Dynamically allocate memory
+                    for (int i = 0; i < MAX_FIRSTNAMES; i++) {
+                        arrayFirstName[i] = (char *)malloc(256); // No name should be more than 256 characters
+                    }
 
-                    // Need to dynamically allocate space - Free needed here
-                    arrayFirstName = (char **) malloc(rowCount * sizeof(char *)); // Dynamically allocate memory
-                    generate_firstName(rowCount); //arrayID will be filled by function, global variable
+                    // TODO: For windows
+                    read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_FIRSTNAMES, arrayFirstName);
+
+                    // TODO: For Linux
+                    // read_file("first_names.txt", MAX_FIRSTNAMES, arrayFirstName);
+
+                    // Generate a random name from the list
+                    for (int j = 0; j < rowCount; ++j) {
+                        char *randomFirstName = selectRandomName(arrayFirstName, MAX_FIRSTNAMES);
+                        fprintf(stdout, "%s", randomFirstName);
+                    }
+
+
+                    //generate_firstName(rowCount); //arrayID will be filled by function, global variable
                     break;
                 }
 
@@ -140,13 +159,19 @@ int main(int argc, char **argv) {
         printf ("Goodbye and thanks for using TableGen\n");
     }
 
+
+    /************************************
+     * FREE MEMORY
+     ***********************************/
     // Free the space for previous malloc
     free(arrayID);
 
-    // Free the allocated memory when you are done
+    // Free the allocated memory for each string array when you are done
     for (int i = 0; i < rowCount; i++) {
         free(arrayFirstName[i]);
     }
+
+    // Free the memory for the main array
     free(arrayFirstName);
 
     // Terminate program successfully

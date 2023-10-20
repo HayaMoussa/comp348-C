@@ -35,32 +35,21 @@ void generate_userID(int rowCount) {
     // return arrayID;
 }
 
-/**
- * Generates a random number within an inclusive range
- * @param min (inclusive)
- * @param max (inclusive)
- * @return random integer within the range provided
- */
-//inclusive for min and max
-int generate_randomNumber(int min, int max) {
-    int randomNumber;
-    randomNumber = rand() % max+1;
-    return randomNumber;
+// Function to randomly select a name from the array
+char *selectRandomName(char **names, int count) {
+    // count represents max lines
+    int randomIndex = rand() % count;
+    // Select a name
+    return names[randomIndex];
 }
-
+/*
 void generate_firstName()
 {
-    int randomNameIndex = generate_randomNumber(0,1000);
-
-    // TODO: For windows
-    read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", 1000, arrayFirstName);
-
-    // TODO: For Linux
-    //read_file("./first_names.txt", rowCount, arrayFirstName);
 
     printf("%s",arrayFirstName[randomNameIndex]); // todo: should this be c or s?
 
 }
+ */
 
 /* AFTER CLASS:
  * - Generate a random name using generate_randomNumber().
