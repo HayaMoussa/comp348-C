@@ -4,7 +4,7 @@
 
 void test2();
 
-void read_file(char *filename);
+void read_file(char *filename, int maxRows);
 
 #endif //COMP348_IOO_H
 

@@ -12,7 +12,7 @@ void test2() {
 
 }
 
-void read_file(char *filename) {
+void read_file(char *filename, int maxRows) {
     // TODO: Full windows path on my laptop needed!! C:\Users\Haya\Documents\Docker\comp348\countries.txt
     FILE *file = fopen(filename, "r");
 
@@ -23,13 +23,22 @@ void read_file(char *filename) {
     }
 
     // Create a buffer the max size of the file and loop until it is empty
-    char buffer[256];
-    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+    char buffer[maxRows];
+    int countRows = 0;
+    for (countRows = 0; countRows < maxRows; ++countRows) // size of returns the size of THE pointer so need division
+    {
+        // Read the file
+        fgets(buffer, sizeof(buffer), file);
+
         // source for strtok idea: https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
-        printf("%s", strtok(buffer, "\n"));
-        printf(",");
-        // todo: remove any new line character
+        printf("%s", strtok(buffer, "\n")); // todo: remove any new line character
+
+        // Print comma if not last element
+        if (countRows!=maxRows-1) {
+            printf(",");
+        }
     }
+
 
     fclose(file);
 }

@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
             return 1;
         }*/
 
-        read_file(filename);
+        read_file(filename, rowCount);
 
     }
     else if (choice == 2)
