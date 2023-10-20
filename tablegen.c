@@ -23,6 +23,8 @@ void select_outputName();
 
 //TODO: Remove this if no global variable used
 //extern int rowCount;
+int *arrayID; // Define the pointer (it's uninitialized)
+
 
 int main(int argc, char **argv) {
 
@@ -70,14 +72,23 @@ int main(int argc, char **argv) {
                 case 1: {
                     printf("User ID");
 
+                    // NOTE: AUTOMATIC ALLOCATION WILL NOT WORK HERE! CANNOT HAVE VARIABLE LENGTH AS A GLOBAL VARIABLE
                     // Create buffer using automatic allocation size is known - No free (or malloc) needed here
-                    int arrayID[rowCount] ; // Will be filled by function
-                    generate_userID(arrayID, rowCount);
+                    //  ; // Will be filled by function
+                    // Automatic allocation would not work here since global variables cannot have a variable length. E.g.int arrayID[rowCount]
+
+                    // Need to dynamically allocate space - Free needed here
+                    arrayID = (int *) malloc(rowCount * sizeof(int)); // Dynamically allocate memory
+                    generate_userID(rowCount);
 
                     // TODO: WRITE TO FILE
                     // Adding the .csv suffix when writing file
                     write_file(strcat(filename, ".csv"), columns, rowCount);
+
+                    // Free the space for previous malloc
+                    free(arrayID);
                     break;
+
                 }
 
                 case 2:

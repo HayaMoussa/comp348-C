@@ -8,7 +8,8 @@ void test(int *columns) {
     printf("int value = %d, Character = %c\n", columns[2], columns[2]);
 }
 
-void generate_userID(int *bufArray, int rowCount) {
+//int *bufArray,
+void generate_userID(int rowCount) {
     //int arrayID[rowCount]; // todo: should I include 1 for NULL?
     int ID = 1;  // Index in list will always be ID-1 as list starts at 0.
     int i;       // For loop until row count
@@ -16,7 +17,9 @@ void generate_userID(int *bufArray, int rowCount) {
     for (i = 0; i < rowCount; ++i)
     {
         // Set the digit entered at the index
-        bufArray[i] = ID;
+        //bufArray[i] = ID;
+        arrayID[i] = ID; // Declare a pointer to an int array
+
 
         // Print the value incremented : TODO: remove after debugging
         printf("int value = %d\n", ID);

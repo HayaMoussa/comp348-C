@@ -5,10 +5,12 @@
 #ifndef FUNCTIONS_H_INCLUDED
 #define FUNCTIONS_H_INCLUDED
 
+extern int *arrayID; // Declare a pointer to an int array
+
 /* Prototypes for the functions */
 void test(int *columns);
 
-void generate_userID(int *bufArray, int rowCount);
+void generate_userID(int rowCount);
 
 void generate_firstName();
 
