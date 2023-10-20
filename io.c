@@ -95,19 +95,18 @@ void write_file(char *filename, int *columns, int rowCount) {
     // TODO: Write the actual line of data
     //fprintf(file, "%s,%s,%s\n", columns[0], columns[1], columns[2]);
 
+    // TODO: Maybe the loops need to be switched.
     // Looping through the "array" of columns saved in select_columns to generate data
-    for (columnIndex = 0; columnIndex <= max; ++columnIndex) // size of returns the size of THE pointer so need division
-    {
-        // TODO: Teacher used fput? I used fprintf for it's formatting options.
-        int rowWritten;
 
-        for (rowWritten = 0; rowWritten <= rowCount; ++rowWritten)
+    // TODO: Teacher used fput? I used fprintf for it's formatting options.
+    int rowWritten;
+    for (rowWritten = 0; rowWritten < rowCount; ++rowWritten)
+    {
+        for (columnIndex = 0; columnIndex <= max; ++columnIndex) // size of returns the size of THE pointer so need division
         {
-            switch(columns[columnIndex])
-            {
+            switch (columns[columnIndex]) {
                 case 1: // User ID
-                    // TODO: Making this a global variable did not work...
-                    //arrayID[rowCount];
+                    fprintf(file, "%d", arrayID[rowWritten]);
                     break;
                 case 2: // First Name
                     break;
@@ -116,24 +115,24 @@ void write_file(char *filename, int *columns, int rowCount) {
                 case 4: // Country
                     break;
                 case 5: // Phone Number
+                    fprintf(file, "Phone Number");
                     break;
                 case 6: // Email Address
                     break;
                 case 7: // SIN
+                    fprintf(file, "SIN");
                     break;
                 case 8: // Password
                     break;
             }
 
             // If last one, do not print a comma
-            if (columnIndex != max)
-            {
-                fprintf(file,",");
+            if (columnIndex != max) {
+                fprintf(file, ",");
             }
         }
+        fprintf(file, "\n");
     }
-    fprintf(file, "\n");
-
 
     // Close file once writing is completed
     fclose(file);
