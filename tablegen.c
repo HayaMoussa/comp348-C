@@ -108,15 +108,6 @@ int main(int argc, char **argv) {
 
                     // TODO: For Linux
                     // read_file("first_names.txt", MAX_FIRSTNAMES, arrayFirstName);
-
-                    // Generate a random name from the list
-                    for (int j = 0; j < rowCount; ++j) {
-                        char *randomFirstName = selectRandomName(arrayFirstName, MAX_FIRSTNAMES);
-                        fprintf(stdout, "%s", randomFirstName);
-                    }
-
-
-                    //generate_firstName(rowCount); //arrayID will be filled by function, global variable
                     break;
                 }
 

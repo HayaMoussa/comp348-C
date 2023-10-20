@@ -4,13 +4,6 @@
 #include "generate.h"
 #include "io.h"
 
-
-void test(int *columns) {
-    printf("int value = %d, Character = %c\n", columns[0], columns[0]);
-    printf("int value = %d, Character = %c\n", columns[1], columns[1]);
-    printf("int value = %d, Character = %c\n", columns[2], columns[2]);
-}
-
 //int *bufArray,
 void generate_userID(int rowCount) {
     //int arrayID[rowCount]; // todo: should I include 1 for NULL?
@@ -20,7 +13,6 @@ void generate_userID(int rowCount) {
     for (i = 0; i < rowCount; ++i)
     {
         // Set the digit entered at the index
-        //bufArray[i] = ID;
         arrayID[i] = ID; // Declare a pointer to an int array
 
         // Print the value incremented : TODO: remove after debugging
@@ -42,17 +34,3 @@ char *selectRandomName(char **names, int count) {
     // Select a name
     return names[randomIndex];
 }
-/*
-void generate_firstName()
-{
-
-    printf("%s",arrayFirstName[randomNameIndex]); // todo: should this be c or s?
-
-}
- */
-
-/* AFTER CLASS:
- * - Generate a random name using generate_randomNumber().
- * - Change the code for it in io.c
- * - Adjust main
- * */

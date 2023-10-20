@@ -157,17 +157,3 @@ void write_file(char *filename, int *columns, int rowCount) {
     // Close file once writing is completed
     fclose(file);
 }
-
-/*
- * Good morning
- * - Clean up a bit and commit
- * - Test and fix
- * - Commit
- * - Save each read into automatic array with right amount (free by itself, no free needed)
- * - Code the generate for the first 4
- * - Commit
- * */
-
-
-// Write the actual line of data
-//fprintf(file, "%s,%s,%s\n", columns[0], columns[1], columns[2]);

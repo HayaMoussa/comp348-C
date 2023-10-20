@@ -17,8 +17,6 @@ void generate_userID(int rowCount);
 
 char *selectRandomName(char **names, int count);
 
-void generate_firstName();
-
 void generate_lastName();
 
 void generate_country();
