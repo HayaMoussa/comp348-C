@@ -3,14 +3,7 @@
 #include "io.h"
 
 #include <string.h>
-#include <unistd.h>
-#include <errno.h>
 
-
-void test2() {
-    printf("int value)");
-
-}
 
 void read_file(char *filename, int maxRows, char buffer[maxRows]) {
     // TODO: Full windows path on my laptop needed!! C:\Users\Haya\Documents\Docker\comp348\countries.txt
@@ -46,7 +39,7 @@ void read_file(char *filename, int maxRows, char buffer[maxRows]) {
     //return buffer[maxRows];
 }
 
-void write_file(char *filename, int *columns) {
+void write_file(char *filename, int *columns, int rowCount) {
     // Open the file for writing and overwrite if needed
     FILE *file = fopen(filename, "wt");
 
@@ -54,11 +47,11 @@ void write_file(char *filename, int *columns) {
      * HEADER GENERATION
      ************************/
     // Looping through the "array" of columns saved in select_columns to generate header
-    int j;       // For loop of column values
+    int columnIndex;       // For loop of column values
     int max = sizeof(columns) / sizeof(int);
-    for (j = 0; j <= max; ++j) // size of returns the size of THE pointer so need division
+    for (columnIndex = 0; columnIndex <= max; ++columnIndex) // size of returns the size of THE pointer so need division
     {
-        switch(columns[j])
+        switch(columns[columnIndex])
         {
             case 1:
                 fprintf(file,"User ID");
@@ -87,7 +80,7 @@ void write_file(char *filename, int *columns) {
         }
 
         // If last one, do not print a comma
-        if (j != max)
+        if (columnIndex != max)
         {
             fprintf(file,",");
         }
@@ -102,6 +95,44 @@ void write_file(char *filename, int *columns) {
     // TODO: Write the actual line of data
     //fprintf(file, "%s,%s,%s\n", columns[0], columns[1], columns[2]);
 
+    // Looping through the "array" of columns saved in select_columns to generate data
+    for (columnIndex = 0; columnIndex <= max; ++columnIndex) // size of returns the size of THE pointer so need division
+    {
+        // TODO: Teacher used fput? I used fprintf for it's formatting options.
+        int rowWritten;
+
+        for (rowWritten = 0; rowWritten <= rowCount; ++rowWritten)
+        {
+            switch(columns[columnIndex])
+            {
+                case 1: // User ID
+                    // TODO: Making this a global variable did not work...
+                    //arrayID[rowCount];
+                    break;
+                case 2: // First Name
+                    break;
+                case 3: // Last Name
+                    break;
+                case 4: // Country
+                    break;
+                case 5: // Phone Number
+                    break;
+                case 6: // Email Address
+                    break;
+                case 7: // SIN
+                    break;
+                case 8: // Password
+                    break;
+            }
+
+            // If last one, do not print a comma
+            if (columnIndex != max)
+            {
+                fprintf(file,",");
+            }
+        }
+    }
+    fprintf(file, "\n");
 
 
     // Close file once writing is completed

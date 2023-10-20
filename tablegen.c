@@ -21,6 +21,9 @@ void select_outputName();
 //TODO: Remove this constant if not used
 #define ASCIIINT 48
 
+//TODO: Remove this if no global variable used
+//extern int rowCount;
+
 int main(int argc, char **argv) {
 
     int choice = 0;      // 1 or 2 for show_menu1(). Automatic allocation so no free needed
@@ -30,8 +33,6 @@ int main(int argc, char **argv) {
 
     // TODO: DO I NEED THIS
     //char *outputFile = (char *)malloc(sizeof(char));  // NEED TO ALLOCATE END OF STRING!! +1;
-
-    test2();
 
     // TODO: remove this before submitting
     setbuf(stdout, 0);
@@ -75,8 +76,7 @@ int main(int argc, char **argv) {
 
                     // TODO: WRITE TO FILE
                     // Adding the .csv suffix when writing file
-                    write_file(strcat(filename, ".csv"), columns);
-
+                    write_file(strcat(filename, ".csv"), columns, rowCount);
                     break;
                 }
 
