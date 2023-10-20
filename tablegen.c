@@ -52,40 +52,65 @@ int main(int argc, char **argv) {
         printf("Enter row count (1 < n < 1M):");
         scanf("%d", &rowCount);
 
-        // Looping throught the "array" of columns saved in select_columns to generate
-        int i;       // For loop of column values
-        for (i = 0; i < (sizeof(columns) / sizeof(int)); ++i) // size of returns the size of THE pointer so need division
-        {
-            switch(columns[i])
-            {
-                case 1:
-                    printf("Int value stored = %d\n", columns[i]);
-                    // Create buffer using automatic allocation size is known - No free (or malloc) needed here
-                    int arrayID[rowCount] ; // Will be filled by function
-                    generate_userID(arrayID, rowCount);
-                    break;
-            }
-        }
-
-        // TODO: Figure out how to insert a string
+        // User input for the name of the csv file
         printf("Enter output file name (no suffix):");
         char filename[256]; // Assuming a maximum file name size of 255 characters
         if (fscanf(stdin, "%255s", filename) == 1) { // limit to 255 characters
             printf("File name entered: %s\n", filename);
         }
-            //select_outputName();
 
-        // TODO: Continue here at home on sofa
-        /*
-        char filename[100]; // Assuming a maximum filename length of 99 characters
-        printf("Enter the file name: ");
-        if (scanf("%99s", filename) != 1) {
-            printf("Invalid input for the file name.\n");
-            return 1;
-        }*/
+        // Looping through the "array" of columns saved in select_columns to generate
+        int i;       // For loop of column values
+        for (i = 0; i <= (sizeof(columns) / sizeof(int)); ++i) // size of returns the size of THE pointer so need division
+        {
+            switch(columns[i])
+            {
+                // Source to add own scope to case: https://stackoverflow.com/questions/61708267/jump-bypasses-variable-initialization-in-switch-statement
+                case 1: {
+                    printf("User ID");
 
-        read_file(filename, rowCount);
+                    // Create buffer using automatic allocation size is known - No free (or malloc) needed here
+                    int arrayID[rowCount] ; // Will be filled by function
+                    generate_userID(arrayID, rowCount);
 
+                    // TODO: WRITE TO FILE
+                    // Adding the .csv suffix when writing file
+                    write_file(strcat(filename, ".csv"), columns);
+
+                    break;
+                }
+
+                case 2:
+                    printf("First Name");
+                    break;
+                case 3:
+                    printf("Last Name");
+                    break;
+                case 4:
+                    printf("Country");
+                    break;
+                case 5:
+                    printf("Phone Number");
+                    break;
+                case 6:
+                    printf("Email Address");
+                    break;
+                case 7:
+                    printf("SIN");
+                    break;
+                case 8:
+                    printf("Password");
+                    break;
+            }
+        }
+
+        //select_outputName();
+
+        // TODO: Add this to other columns
+        //read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", rowCount);
+
+        // Adding the .csv suffix when writing file
+        //write_file(strcat(filename, ".csv"), columns);
     }
     else if (choice == 2)
     {
@@ -166,21 +191,7 @@ void select_columns(int *columns) {
     // Deallocation needed due to malloc (dynamic)
     free(inputColumns);  // Deallocate user input memory
 }
-/*
-void select_outputName() {
-    printf("Enter the file name: ");
-    if (fscanf(stdin, "%255s", filename) == 1) { // limit to 255 characters
-        printf("File name entered: %s\n", filename);
 
-        //read_file(filename);
-
-        //scanf("%s", &outputFile);
-        //printf("output file entered= %s\n", outputFile);
-        //outputFile = (char *) realloc(outputFile, (count + 1) * sizeof(int));
-    }
-
-}
-*/
 // TODO: void summarize()
 
 

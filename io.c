@@ -12,7 +12,7 @@ void test2() {
 
 }
 
-void read_file(char *filename, int maxRows) {
+void read_file(char *filename, int maxRows, char buffer[maxRows]) {
     // TODO: Full windows path on my laptop needed!! C:\Users\Haya\Documents\Docker\comp348\countries.txt
     FILE *file = fopen(filename, "r");
 
@@ -22,8 +22,7 @@ void read_file(char *filename, int maxRows) {
         return;
     }
 
-    // Create a buffer the max size of the file and loop until it is empty
-    char buffer[maxRows];
+
     int countRows = 0;
     for (countRows = 0; countRows < maxRows; ++countRows) // size of returns the size of THE pointer so need division
     {
@@ -37,62 +36,73 @@ void read_file(char *filename, int maxRows) {
         if (countRows!=maxRows-1) {
             printf(",");
         }
+
+        fprintf(file, "\n");
     }
 
-
     fclose(file);
+
+    //TODO: Should I return stuff
+    //return buffer[maxRows];
 }
 
 void write_file(char *filename, int *columns) {
-    FILE *file = fopen(filename, "wt"); // Open the file for writing
+    // Open the file for writing and overwrite if needed
+    FILE *file = fopen(filename, "wt");
 
-    // Prepare the header of the CSV with the columns entered
-    fprintf(file, "User ID,First Name,Last Name\n");
-
-    // Looping throught the "array" of columns saved in select_columns to generate
-    int i;       // For loop of column values
+    /************************
+     * HEADER GENERATION
+     ************************/
+    // Looping through the "array" of columns saved in select_columns to generate header
+    int j;       // For loop of column values
     int max = sizeof(columns) / sizeof(int);
-    for (i = 0; i < max; ++i) // size of returns the size of THE pointer so need division
+    for (j = 0; j <= max; ++j) // size of returns the size of THE pointer so need division
     {
-        switch(columns[i])
+        switch(columns[j])
         {
             case 1:
-                printf("User ID");
+                fprintf(file,"User ID");
                 break;
             case 2:
-                printf("First Name");
+                fprintf(file,"First Name");
                 break;
             case 3:
-                printf("Last Name");
+                fprintf(file,"Last Name");
                 break;
             case 4:
-                printf("Country");
+                fprintf(file,"Country");
                 break;
             case 5:
-                printf("Phone Number");
+                fprintf(file,"Phone Number");
                 break;
             case 6:
-                printf("Email Address");
+                fprintf(file,"Email Address");
                 break;
             case 7:
-                printf("SIN");
+                fprintf(file,"SIN");
                 break;
             case 8:
-                printf("Password");
+                fprintf(file,"Password");
                 break;
         }
 
         // If last one, do not print a comma
-        //int lastPosition = (sizeof(columns) / sizeof(int)) ; // TODO: erase this
-        if (i != max - 1) // lastLoop
+        if (j != max)
         {
-            printf(",");
+            fprintf(file,",");
         }
 
     }
+    fprintf(file, "\n");
+
+    /****************************************
+     * WRITING THE GENERATED DATA TO FILE
+     ****************************************/
 
     // TODO: Write the actual line of data
     //fprintf(file, "%s,%s,%s\n", columns[0], columns[1], columns[2]);
+
+
 
     // Close file once writing is completed
     fclose(file);
