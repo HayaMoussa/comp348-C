@@ -6,14 +6,14 @@
 #define FUNCTIONS_H_INCLUDED
 
 extern int *arrayID; // Declare a pointer to an int array
-extern char *arrayFirstName;
+extern char **arrayFirstName;
 
 /* Prototypes for the functions */
 void test(int *columns);
 
 void generate_userID(int rowCount);
 
-void generate_firstName(int rowCount);
+void generate_firstName();
 
 void generate_lastName();
 

@@ -26,7 +26,7 @@ void select_outputName();
 //TODO: Remove this if no global variable used
 //extern int rowCount;
 int *arrayID; // Define the pointer (it's uninitialized)
-char *arrayFirstName; // Define the pointer (it's uninitialized)
+char **arrayFirstName; // Define the pointer (it's uninitialized)
 
 
 int main(int argc, char **argv) {
@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
                     //char arrayFirstName[rowCount];
 
                     // Need to dynamically allocate space - Free needed here
-                    arrayFirstName = (char *) malloc(rowCount * sizeof(char)); // Dynamically allocate memory
+                    arrayFirstName = (char **) malloc(rowCount * sizeof(char *)); // Dynamically allocate memory
                     generate_firstName(rowCount); //arrayID will be filled by function, global variable
                     break;
                 }
@@ -142,6 +142,11 @@ int main(int argc, char **argv) {
 
     // Free the space for previous malloc
     free(arrayID);
+
+    // Free the allocated memory when you are done
+    for (int i = 0; i < rowCount; i++) {
+        free(arrayFirstName[i]);
+    }
     free(arrayFirstName);
 
     // Terminate program successfully

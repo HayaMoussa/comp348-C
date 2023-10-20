@@ -48,17 +48,17 @@ int generate_randomNumber(int min, int max) {
     return randomNumber;
 }
 
-void generate_firstName(int rowCount)
+void generate_firstName()
 {
-    int randomNameIndex = generate_randomNumber(0,100);
+    int randomNameIndex = generate_randomNumber(0,1000);
 
     // TODO: For windows
-    read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", rowCount, arrayFirstName);
+    read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", 1000, arrayFirstName);
 
     // TODO: For Linux
     //read_file("./first_names.txt", rowCount, arrayFirstName);
 
-    printf("%c",arrayFirstName[randomNameIndex]); // todo: should this be c or s?
+    printf("%s",arrayFirstName[randomNameIndex]); // todo: should this be c or s?
 
 }
 

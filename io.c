@@ -1,11 +1,12 @@
 // Libraries
 #include <stdio.h>
+#include <stdlib.h> // for malloc
 #include "io.h"
 
 #include <string.h>
 
 
-void read_file(char *filename, int maxRows, char buffer[maxRows]) {
+void read_file(char *filename, int maxRows, char **buffer) {
     // TODO: Full windows path on my laptop needed!! C:\Users\Haya\Documents\Docker\comp348\countries.txt
     FILE *file = fopen(filename, "r");
 
@@ -15,23 +16,28 @@ void read_file(char *filename, int maxRows, char buffer[maxRows]) {
         return;
     }
 
+    int countRows;
+    for (countRows = 0; countRows < maxRows; ++countRows) {
+        // Create space for an array of characters for each row (index)
+        buffer[countRows] = (char *) malloc(64); // Assuming a maximum line length of 64 bytes
 
-    int countRows = 0;
-    for (countRows = 0; countRows < maxRows; ++countRows) // size of returns the size of THE pointer so need division
-    {
-        // Read the file
-        fgets(buffer, sizeof(buffer), file);
+        //TODO: Should I realloc?
 
-        // todo: Why is this skipping the first letter in Windows? Remove this later anyways but it used to work? I think it is related to Windows
-        // source for strtok idea: https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
-        printf("%s", strtok(buffer, "\n")); // todo: remove any new line character
+        // Exit the loop if there are no more line to read
+        if (fgets(buffer[countRows], 255, file) == NULL) {
+            break; // Exit the loop if there are no more lines
+        }
+
+        /*
+         // TODO: This is for testing
+        // Remove the newline character from the end of the string
+        fprintf(stdout, "%s", strtok(buffer[countRows], "\n"));//  strtok(buffer[countRows], "\n");
 
         // Print comma if not last element
         if (countRows!=(maxRows-1)) {
-            printf(",");
+            fprintf(stdout,",");
         }
-
-        fprintf(file, "\n");
+         */
     }
 
     fclose(file);
@@ -74,7 +80,7 @@ void write_file(char *filename, int *columns, int rowCount) {
                     }
                     else
                     {
-                        fprintf(file, "%c", arrayID[rowWritten]);
+                        fprintf(file, "%s", arrayFirstName[rowWritten]);
                     }
                     break;
                 case 3: // Last Name
