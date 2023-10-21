@@ -128,6 +128,7 @@ char *generate_password(int min_length, int max_length) {
     // Add the null terminating string
     password[password_length] = '\0';
 
+
     return password;
 }
 

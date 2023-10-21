@@ -129,7 +129,7 @@ int main(int argc, char **argv)
                         read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_COUNTRIES,
                                   arrayCountry);
                         // For linux
-                        read_file("countries.txt", MAX_COUNTRIES, arrayCountry);
+                        //read_file("countries.txt", MAX_COUNTRIES, arrayCountry); //this works
                         is_countries_loaded = 1;
                     }
                     strcpy(users[i].country, generate_element(arrayCountry, MAX_COUNTRIES));
@@ -162,8 +162,8 @@ int main(int argc, char **argv)
         // Write the file
         write_file(strcat(filename, ".csv"), columns, users, rowCount, count_columns);
 
-        // TODO: Put free memory at the right place
-        free_memory(users, rowCount);
+        // TODO: Put free memory at the right place after adjusting
+        // free_memory(users, rowCount);
     }
 
     else if (choice == 2)

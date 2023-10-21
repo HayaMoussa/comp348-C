@@ -147,7 +147,7 @@ void write_file(const char *filename, const int *columns, struct UserData *users
           }
           else if (columns[col] == PASSWORD)
           {
-              fprintf(file,"%s", "%s", users[row].password);
+              fprintf(file,"%s", users[row].password);
           }
           // Last element in row should not have a comma, but others should.
           if (col != count_columns-1)
