@@ -25,7 +25,7 @@ void generate_userID(int rowCount) {
 }
 
 // Function to randomly select a first name from the array
-char *selectRandomName(char **arrayName, int count) {
+char *selectRandomElement(char **arrayName, int count) {
     // count represents max lines
     int randomIndex = rand() % count;
     // Select a name

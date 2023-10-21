@@ -81,7 +81,7 @@ void write_file(char *filename, int *columns, int rowCount) {
                     }
                     else
                     {
-                        char *randomFirstName = selectRandomName(arrayFirstName, MAX_NAMES);
+                        char *randomFirstName = selectRandomElement(arrayFirstName, MAX_NAMES);
                         fprintf(file, "%s", strtok(randomFirstName, "\n"));
                     }
                     break;
@@ -92,18 +92,19 @@ void write_file(char *filename, int *columns, int rowCount) {
                     }
                     else
                     {
-                        char *randomLastName = selectRandomName(arrayLastName, MAX_NAMES);
+                        char *randomLastName = selectRandomElement(arrayLastName, MAX_NAMES);
                         fprintf(file, "%s", strtok(randomLastName, "\n"));
                     }
                     break;
-                case 4: // Country
+                case 4:
                     if (rowWritten==-1)
                     {
                         fprintf(file,"Country");
                     }
                     else
                     {
-                        fprintf(file, "NOPE");
+                        char *randomCountry = selectRandomElement(arrayCountry, MAX_COUNTRIES);
+                        fprintf(file, "%s", strtok(randomCountry, "\n"));
                     }
                     break;
                 case 5: // Phone Number

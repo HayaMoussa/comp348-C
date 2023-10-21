@@ -7,7 +7,6 @@ extern int arrayID[rowCount]; // Declare the global variable
 */
 
 extern int *arrayID; // Declare a pointer to an int array
-extern char *firstNames;
 
 void read_file(char *filename, int maxRows, char **buffer);
 

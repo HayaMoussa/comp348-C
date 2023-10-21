@@ -22,6 +22,7 @@ void select_outputName();
 
 //TODO: Remove this constant if not used
 #define MAX_NAMES 1000
+#define MAX_COUNTRIES 195
 
 //TODO: Remove this if no global variable used
 //extern int rowCount;
@@ -30,6 +31,7 @@ void select_outputName();
 int *arrayID;
 char **arrayFirstName;
 char **arrayLastName;
+char **arrayCountry;
 
 int main(int argc, char **argv) {
     // TODO: remove this before submitting
@@ -123,7 +125,17 @@ int main(int argc, char **argv) {
                     break;
 
                 case 4:
-                    printf("Country");
+                    // Need to dynamically allocate space - Free needed later
+                    arrayCountry = (char **) malloc(MAX_COUNTRIES * sizeof(char *)); // Dynamically allocate memory
+                    for (int i = 0; i < MAX_COUNTRIES; i++) {
+                        arrayCountry[i] = (char *)malloc(256); // No name should be more than 256 characters
+                    }
+
+                    // TODO: For windows
+                    read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_COUNTRIES, arrayCountry);
+
+                    // TODO: For Linux
+                    // read_file("countries.txt", MAX_COUNTRIES, arrayCountry);
                     break;
                 case 5:
                     printf("Phone Number");
@@ -165,14 +177,33 @@ int main(int argc, char **argv) {
     // Free the space for previous malloc
     free(arrayID);
 
+    // todo: fix these free
+    /*
     // Free the allocated memory for each string array when you are done
-    for (int i = 0; i < rowCount; i++) {
+    for (int i = 0; i < MAX_NAMES; i++) {
         free(arrayFirstName[i]);
     }
 
     // Free the memory for the main array
     free(arrayFirstName);
 
+    // Free the allocated memory for each string array when you are done
+    for (int i = 0; i < MAX_NAMES; i++) {
+        free(arrayLastName[i]);
+    }
+
+    // Free the memory for the main array
+    free(arrayLastName);
+
+
+    // Free the allocated memory for each string array when you are done
+    for (int i = 0; i < MAX_COUNTRIES; i++) {
+        free(arrayCountry[i]);
+    }
+
+    // Free the memory for the main array
+    free(arrayCountry);
+*/
     // Terminate program successfully
     return 0;
 }

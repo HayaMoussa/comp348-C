@@ -6,10 +6,12 @@
 #define FUNCTIONS_H_INCLUDED
 
 #define MAX_NAMES 1000
+#define MAX_COUNTRIES 195
 
 extern int *arrayID; // Declare a pointer to an int array
 extern char **arrayFirstName;
 extern char **arrayLastName;
+extern char **arrayCountry;
 
 
 /* Prototypes for the functions */
@@ -17,7 +19,7 @@ void test(int *columns);
 
 void generate_userID(int rowCount);
 
-char *selectRandomName(char **names, int count);
+char *selectRandomElement(char **names, int count);
 
 void generate_lastName();
 
