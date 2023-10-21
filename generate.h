@@ -5,10 +5,12 @@
 #ifndef FUNCTIONS_H_INCLUDED
 #define FUNCTIONS_H_INCLUDED
 
-#define MAX_FIRSTNAMES 1000
+#define MAX_NAMES 1000
 
 extern int *arrayID; // Declare a pointer to an int array
 extern char **arrayFirstName;
+extern char **arrayLastName;
+
 
 /* Prototypes for the functions */
 void test(int *columns);

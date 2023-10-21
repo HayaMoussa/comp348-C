@@ -62,7 +62,7 @@ void write_file(char *filename, int *columns, int rowCount) {
         for (columnIndex = 0; columnIndex <= max; ++columnIndex) // size of returns the size of THE pointer so need division
         {
             switch (columns[columnIndex]) {
-                case 1: // User ID
+                case 1:
                     // This writes the header
                     if (rowWritten==-1)
                     {
@@ -74,25 +74,26 @@ void write_file(char *filename, int *columns, int rowCount) {
                         fprintf(file, "%d", arrayID[rowWritten]);
                     }
                     break;
-                case 2: // First Name
+                case 2:
                     if (rowWritten==-1)
                     {
                         fprintf(file,"First Name");
                     }
                     else
                     {
-                        char *randomFirstName = selectRandomName(arrayFirstName, MAX_FIRSTNAMES);
-                        fprintf(file, "%s", randomFirstName);
+                        char *randomFirstName = selectRandomName(arrayFirstName, MAX_NAMES);
+                        fprintf(file, "%s", strtok(randomFirstName, "\n"));
                     }
                     break;
-                case 3: // Last Name
+                case 3:
                     if (rowWritten==-1)
                     {
                         fprintf(file,"Last Name");
                     }
                     else
                     {
-                        fprintf(file, "NOPE");
+                        char *randomLastName = selectRandomName(arrayLastName, MAX_NAMES);
+                        fprintf(file, "%s", strtok(randomLastName, "\n"));
                     }
                     break;
                 case 4: // Country

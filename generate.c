@@ -15,9 +15,6 @@ void generate_userID(int rowCount) {
         // Set the digit entered at the index
         arrayID[i] = ID; // Declare a pointer to an int array
 
-        // Print the value incremented : TODO: remove after debugging
-        printf("int value = %d\n", ID);
-
         //Increment
         ID++;
     }
@@ -27,10 +24,10 @@ void generate_userID(int rowCount) {
     // return arrayID;
 }
 
-// Function to randomly select a name from the array
-char *selectRandomName(char **names, int count) {
+// Function to randomly select a first name from the array
+char *selectRandomName(char **arrayName, int count) {
     // count represents max lines
     int randomIndex = rand() % count;
     // Select a name
-    return names[randomIndex];
+    return arrayName[randomIndex];
 }

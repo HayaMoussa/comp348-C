@@ -21,18 +21,15 @@ void select_columns();
 void select_outputName();
 
 //TODO: Remove this constant if not used
-#define MAX_FIRSTNAMES 1000
+#define MAX_NAMES 1000
 
 //TODO: Remove this if no global variable used
 //extern int rowCount;
 
-// Lists to write with
-int *arrayID; // Define the pointer (it's uninitialized)
-char *firstNames;
-
-// Lists to read with
-char **arrayFirstName; // Define the pointer (it's uninitialized)
-
+// Lists to write with (defining uninitialized)
+int *arrayID;
+char **arrayFirstName;
+char **arrayLastName;
 
 int main(int argc, char **argv) {
     // TODO: remove this before submitting
@@ -98,22 +95,33 @@ int main(int argc, char **argv) {
 
                 case 2: {
                     // Need to dynamically allocate space - Free needed later
-                    arrayFirstName = (char **) malloc(MAX_FIRSTNAMES * sizeof(char *)); // Dynamically allocate memory
-                    for (int i = 0; i < MAX_FIRSTNAMES; i++) {
+                    arrayFirstName = (char **) malloc(MAX_NAMES * sizeof(char *)); // Dynamically allocate memory
+                    for (int i = 0; i < MAX_NAMES; i++) {
                         arrayFirstName[i] = (char *)malloc(256); // No name should be more than 256 characters
                     }
 
                     // TODO: For windows
-                    read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_FIRSTNAMES, arrayFirstName);
+                    read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES, arrayFirstName);
 
                     // TODO: For Linux
-                    // read_file("first_names.txt", MAX_FIRSTNAMES, arrayFirstName);
+                    // read_file("first_names.txt", MAX_NAMES, arrayFirstName);
                     break;
                 }
 
                 case 3:
-                    printf("Last Name");
+                    // Need to dynamically allocate space - Free needed later
+                    arrayLastName = (char **) malloc(MAX_NAMES * sizeof(char *)); // Dynamically allocate memory
+                    for (int i = 0; i < MAX_NAMES; i++) {
+                        arrayLastName[i] = (char *)malloc(256); // No name should be more than 256 characters
+                    }
+
+                    // TODO: For windows
+                    read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES, arrayLastName);
+
+                    // TODO: For Linux
+                    // read_file("last_names.txt", MAX_NAMES, arrayLastName);
                     break;
+
                 case 4:
                     printf("Country");
                     break;
@@ -232,9 +240,6 @@ void select_columns(int *columns) {
         // Repeat loop
         token = strtok(NULL, ",");
     }
-
-    // TODO: Remove this when no longer needed
-    test(columns);
 
     // Deallocation needed due to malloc (dynamic)
     free(inputColumns);  // Deallocate user input memory
