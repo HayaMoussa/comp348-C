@@ -44,30 +44,9 @@ void read_file(char *filename, int maxRows, char **array) {
             strtok(newline, "\r");
         }
 
-            /*
-            char *str = strdup(array[countRows]);
-            if (str != NULL) {
-                free(array[countRows]); // Free the original string
-                array[countRows] = str; // Update the array with the duplicated string
-            }
-             */
-
-
-        // Remove newline character if present
-        /*
-        char *newline = strchr(array[countRows], '\n');
-        if (newline != NULL) {
-            *newline = '\0';
-        }
-         */
-        /*
-        if (strcmp(array[countRows], "\n") == 0) {
-            array[countRows] = '\0';
-         }*/
-
         // Exit the loop if there are no more line to read
         if (fgets(array[countRows], maxRows, file) == NULL) {
-            break; // Exit the loop if there are no more lines
+            break;
         }
 
         /*
@@ -81,7 +60,6 @@ void read_file(char *filename, int maxRows, char **array) {
         }
          */
     }
-
 
     fclose(file);
 }

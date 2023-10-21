@@ -46,5 +46,10 @@ void show_menu2();
 int count_array_elements(char **arrayName);
 void select_columns(int *columns);
 void free_memory(struct UserData *users,int rowCount);
+void create_user(struct UserData *user);
+void initialize_read_arrays();
+void select_output_filename(char *filename, int max_length);
+void select_row_count(int *rowCount);
+
 
 #endif //COMP348_TABLEGEN_H

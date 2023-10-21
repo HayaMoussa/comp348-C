@@ -1,9 +1,5 @@
-// Libraries
-#include <stdio.h>
-#include <stdlib.h> //for rand()
-#include <string.h>
 #include "generate.h"
-#include "io.h"
+//#include "io.h"
 
 
 int generate_random_number(int max) {
@@ -69,11 +65,15 @@ char *generate_email(char* first_name, char* last_name, char** email_suffixes, i
     return email;
 }
 
-/*
 char *generate_SIN(struct UserData *users, int max) {
 
     // Allocate memory for 9 digits + null terminator
     char *sin = (char*)malloc(10);
+
+    // Initialize the sin array with null characters
+    for (int i = 0; i < 10; i++) {
+        sin[i] = '\0';
+    }
 
     while (1) {
         // GENERATE A SIN
@@ -81,29 +81,33 @@ char *generate_SIN(struct UserData *users, int max) {
             // Generate a random digit between 0 and 9
             int random_digit = generate_random_number(10);  // Generate a random digit between 0 and 9
 
-            // Create the string to do: confirm
-            sin[i] = (char) random_digit;
+            // Generate the ACII character (zero is the same as doing +48)
+             sin[i] = '0' + random_digit;
         }
 
         // Add the null at the last position to complete the string
         sin[9] = '\0';  // Null-terminate the string
 
+        // TODO: ADD UNIQUENESS CHECKING
+        /*
         // CHECK UNIQUENESS OF GENERATED SIN
         int is_unique = 1;
         for (int i = 0; i < max; i++) {
-            if (strcmp(generated_sin, user_data[i].sin) == 0) { // strcmp will return 0 if matching string in array, so not unique
+            if (strcmp(sin, users[i].sin) == 0) { // strcmp will return 0 if matching string in array, so not unique
                 is_unique = 0;
                 break;
             }
         }
 
-        if (unique == 1 ) // still unique, we can return, otherwise restart with infinite loop
+        if (is_unique == 1 ) // still unique, we can return, otherwise restart with infinite loop
         {
             return sin;
         }
+         */
+        return sin;
     }
 }
- */
+
 
 // Function to generate a random password
 char *generate_password(int min_length, int max_length) {
