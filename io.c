@@ -79,27 +79,35 @@ void write_file(const char *filename, const int *columns, struct UserData *users
     {
         if (columns[i] == USER_ID)
         {
+            printf("USER ID"); //TODO: Remove
             fprintf(file, "User ID");
         } else if (columns[i] == FIRST_NAME)
         {
+            printf("First Name"); //TODO: Remove
             fprintf(file, "First Name");
         } else if (columns[i] == LAST_NAME)
         {
+            printf("Last Name"); //TODO: Remove
             fprintf(file, "Last Name");
         } else if (columns[i] == COUNTRY)
         {
+            printf("Country");//TODO: Remove
             fprintf(file, "Country");
         } else if (columns[i] == PHONE_NUMBER)
         {
+            printf("Phone");//TODO: Remove
             fprintf(file, "Phone Number");
         } else if (columns[i] == EMAIL)
         {
+            printf("Email");//TODO: Remove
             fprintf(file, "Email Address");
         } else if (columns[i] == SIN)
         {
+            printf("SIN");//TODO: Remove
             fprintf(file, "SIN");
         } else if (columns[i] == PASSWORD)
         {
+            printf("Password");//TODO: Remove
             fprintf(file, "Password");
         }
 
@@ -115,8 +123,9 @@ void write_file(const char *filename, const int *columns, struct UserData *users
     // Write the data rows
     for (int row = 0; row < row_count; row++)
     {
-      for (int col = 0; col < count_columns; col++) 
+        for (int col = 0; col < count_columns; col++)
       {
+          printf("%d",users[col].user_id); //TODO: Remove
           if (columns[col] == USER_ID)
           {
               fprintf(file,"%d", users[row].user_id);
@@ -147,7 +156,7 @@ void write_file(const char *filename, const int *columns, struct UserData *users
           }
           else if (columns[col] == PASSWORD)
           {
-              fprintf(file,"%s", "%s", users[row].password);
+              fprintf(file,"%s", users[row].password);
           }
           // Last element in row should not have a comma, but others should.
           if (col != count_columns-1)

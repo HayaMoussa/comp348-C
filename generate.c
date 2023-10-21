@@ -43,8 +43,11 @@ char *generate_phone_number(char **arrayName, int max) {
     // Generate a random number to get 4 digits
     int random_four_digits = generate_random_number(10000);
 
+    // Avoiding oversize
+    int required_size = snprintf(NULL, 0, "%s-%04d", arrayName[random_index], random_four_digits) + 1;
+
     // Allocate memory for 3 digits, '-', 4 digits, and null terminator to end string
-    char* phone_number = (char*)malloc(12);
+    char* phone_number = (char*)malloc(required_size);
     if (phone_number) {
         sprintf(phone_number, "%s-%04d", arrayName[random_index], random_four_digits);
     }

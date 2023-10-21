@@ -7,7 +7,7 @@
 
 // Saved list
 // Create an instance of the UserData struct using pointers
-struct UserData *user_data;
+//struct UserData *users;
 
 // All data read and saved will be stored in this list
 char **arrayFirstName;
@@ -34,7 +34,8 @@ int main(int argc, char **argv)
     int nbr_phone_area = count_array_elements(phone_area_array);
 
     // Declare string using malloc since we do not know how many columns will be entered by user
-    int *columns = (int *) malloc(sizeof(int)); // NEED TO ALLOCATE END OF STRING!! +1?
+    //int *columns = (int *) malloc(sizeof(int)); // NEED TO ALLOCATE END OF STRING!! +1?
+
 
     // Declaration and initialization (automatic allocation = no free needed)
     int choice = 0;          // 1 or 2 for show_menu1(). Automatic allocation so no free needed
@@ -58,7 +59,8 @@ int main(int argc, char **argv)
         show_menu2();
 
         // User input for the columns to generate
-        int count_columns = select_columns(columns);
+        int *columns = NULL;
+        int count_columns = select_columns(&columns);
 
         // User input for the number of columns generated in the files
         select_row_count(&rowCount);
@@ -73,20 +75,22 @@ int main(int argc, char **argv)
         // Prepare the arrays to receive data from file
         initialize_read_arrays();
 
-
         int is_first_name_loaded = 0;
         int is_last_name_loaded = 0;
         int is_countries_loaded = 0;
 
-        for (int i = 0; i < rowCount; i++
-                )
+        // TODO: THIS IS OK!! SO WHY IS IT BREAKING IN THE LOOP
+        //printf("FOR LOOP: %d %d %d %d %d",columns[0],columns[1],columns[2],columns[3],columns[4]);
+
+        for (int i = 0; i < rowCount; i++)
         {
             // Creating the memory for a user at that position in users
             create_user(&users[i]);
 
-            for (int j = 0; j < count_columns; j++
-                    )
+            for (int j = 0; j < count_columns; j++)
             {
+                //TODO: WHY IS THIS BROKEN! :(
+                printf("FOR LOOP: %d",columns[j]);
 
                 if (columns[j] == USER_ID)
                 {
@@ -97,9 +101,7 @@ int main(int argc, char **argv)
                 {
                     if (is_first_name_loaded == 0)
                     {
-
-                        read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES,
-                                  arrayFirstName);
+                        read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES,arrayFirstName);
                         //For linux
                         //read_file("first_names.txt", MAX_NAMES, arrayFirstName);
                         is_first_name_loaded = 1;
@@ -111,8 +113,7 @@ int main(int argc, char **argv)
                 {
                     if (is_last_name_loaded == 0)
                     {
-                        read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES,
-                                  arrayLastName);
+                        read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES,arrayLastName);
                         // For linux
                         // read_file("last_names.txt", MAX_NAMES, arrayLastName);
                         is_last_name_loaded = 1;
@@ -129,7 +130,7 @@ int main(int argc, char **argv)
                         read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_COUNTRIES,
                                   arrayCountry);
                         // For linux
-                        read_file("countries.txt", MAX_COUNTRIES, arrayCountry);
+                        //read_file("countries.txt", MAX_COUNTRIES, arrayCountry);
                         is_countries_loaded = 1;
                     }
                     strcpy(users[i].country, generate_element(arrayCountry, MAX_COUNTRIES));
@@ -142,7 +143,7 @@ int main(int argc, char **argv)
                 }
                 else if (columns[j] == EMAIL)
                 {
-                    strcpy(users[i].email, generate_email(users[i].first_name, users[i].last_name, email_suffixes, 100)); //assume a max of 100 char
+                    strcpy(users[i].email, generate_email(users[i].first_name, users[i].last_name, email_suffixes, nbr_suffix)); //assume a max of 100 char
                     printf("Email: %s\n", users[i].email); //half working
                 }
                 else if (columns[j] == SIN)
@@ -163,7 +164,7 @@ int main(int argc, char **argv)
         write_file(strcat(filename, ".csv"), columns, users, rowCount, count_columns);
 
         // TODO: Put free memory at the right place
-        free_memory(users, rowCount);
+        // free_memory(users, rowCount);
     }
 
     else if (choice == 2)
@@ -238,15 +239,13 @@ void initialize_read_arrays()
     arrayCountry = (char **) malloc(sizeof(char *) * MAX_COUNTRIES);
 
     // Initialize each element to NULL (important to terminate the array)
-    for (int i = 0; i < MAX_NAMES; i++
-            )
+    for (int i = 0; i < MAX_NAMES; i++)
     {
         arrayFirstName[i] = NULL;
         arrayLastName[i] = NULL;
     }
     // Initialize each element to NULL (important to terminate the array)
-    for (int i = 0; i < MAX_COUNTRIES; i++
-            )
+    for (int i = 0; i < MAX_COUNTRIES; i++)
     {
         arrayCountry[i] = NULL;
     }
@@ -342,43 +341,30 @@ int count_array_elements(char **arrayName)
     }
     return nbr_elements;
 }
+int select_columns(int *columns) {
+    int count = 0;
+    char inputColumns[16];
 
-int select_columns(int *columns)
-{
-    int count = 0;                  // Initialize a count to keep track of the number of integers read, starts at 0
-    char *inputColumns = NULL;      // Declare a pointer to store the "raw" char gotten from scanf.
-    //int *columns = NULL;           // Declare a pointer to store the casted integers used for manipulations - acts as main array
+    printf("Enter column list (comma separated, no spaces): ");
+    scanf("%15s", inputColumns);
 
-    // Allocate memory for user input. 8 + 7 commas maximum.
-    inputColumns = (char *) malloc(sizeof(int) * 16);  // Allocate memory for user input
-
-    // User input of the columns // TODO: Should I put this back to c?
-    scanf("%s", inputColumns);
-
-    // Use strtok to return a pointer to the first CHARACTER of the first token.
     char *token = strtok(inputColumns, ",");
+    while (token != NULL) {
+        int columnValue = 0;
 
-    // Loop until the last token
-    while (token != NULL)
-    {
-        // Convert to a long int the token found by strtok
-        int columnValue = (int) strtol(token, NULL, 10);
+        // Check if the token contains only digits
+        if (scanf(token, "%d", &columnValue) == 1) {
+            columns = (int *)realloc(columns, (count + 1) * sizeof(int));
 
-        // Increase the size of the array with the number of digits entered by the user
-        columns = (int *) realloc(columns, (count + 1) * sizeof(int));
+            if (columns != NULL)
+            {
+                columns[count] = columnValue;
+                count++;
+            }
+        }
 
-        // Set the digit entered at the index
-        columns[count] = columnValue;
-
-        // Increment to keep track of the indexes for future tokens
-        count++;
-
-        // Repeat loop
         token = strtok(NULL, ",");
     }
-
-    // Deallocation needed due to malloc (dynamic)
-    free(inputColumns);  // Deallocate user input memory
 
     return count;
 }
@@ -387,7 +373,8 @@ int select_columns(int *columns)
  * test thing for all options
  * find out how to remove /n
  * clean code + document
- * 1sort
+ * qsort
  * exit with c
  * void summarize()
+ * add uniqueness of SIN
 */
