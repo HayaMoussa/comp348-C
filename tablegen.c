@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
         show_menu2();
 
         // User input for the columns to generate
-        select_columns(columns);
+        int count_columns = select_columns(columns);
 
         // User input for the number of columns generated in the files
         select_row_count(&rowCount);
@@ -81,8 +81,7 @@ int main(int argc, char **argv) {
             // Creating the memory for a user at that position in users
             create_user(&users[i]);
 
-            // TODO: CHANGE THIS 3 ONCE IT WORKS
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < count_columns; j++) {
 
                 if (columns[j] == USER_ID) {
                     users[i].user_id = generate_userID();
@@ -498,7 +497,7 @@ void initializing_array_null(char *str, int length) {
     }
 }
 
-void select_columns(int *columns) {
+int select_columns(int *columns) {
     int count = 0;                  // Initialize a count to keep track of the number of integers read, starts at 0
     char *inputColumns = NULL;      // Declare a pointer to store the "raw" char gotten from scanf.
     //int *columns = NULL;           // Declare a pointer to store the casted integers used for manipulations - acts as main array
@@ -532,6 +531,8 @@ void select_columns(int *columns) {
 
     // Deallocation needed due to malloc (dynamic)
     free(inputColumns);  // Deallocate user input memory
+
+    return count;
 }
 
 // TODO: void summarize()
