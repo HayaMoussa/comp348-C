@@ -8,7 +8,19 @@
 #include "io.h"
 
 
-void read_file(char *filename, int maxRows, char ***array) {
+/***
+ *
+ * @param filename
+ * @param maxRows
+ * @param ***array:
+ *          array: pointer to memory location of the string. String is saved as an array of char.
+ *          *array: gives the string stored in that memory location
+ *          array[i] : access to individual element of the string, so access to a character.
+ *
+ *          **array: Gives you a mega-list of all names, countries, etc. This is a list similar to a "page" that saves all the individual strings from the previous "level" (countries, first name, etc.) in one space
+ *          *array[countRows]: access to a particular name, country, etc within the page.
+ */
+void read_file(char *filename, int maxRows, char **array) {
     // TODO: Full windows path on my laptop needed!! C:\Users\Haya\Documents\Docker\comp348\countries.txt
     FILE *file = fopen(filename, "r");
 
@@ -21,14 +33,18 @@ void read_file(char *filename, int maxRows, char ***array) {
     int countRows;
     for (countRows = 0; countRows < maxRows; ++countRows) {
         // Create space for an array of characters for each row (index)
-        (*array)[countRows] = (char *) malloc(maxRows); // Assuming a maximum line length of 64 bytes
+        array[countRows] = (char *) malloc(64); // Assuming a string of country, name, etc is never more thatn 64 bytes
 
-
-        // Exit the loop if there are no more line to read
-        if (fgets((*array)[countRows], maxRows, file) == NULL) {
-            break; // Exit the loop if there are no more lines
+        // Remove newline character if present
+        char *newline = strchr(array[countRows], '\n');
+        if (newline != NULL) {
+            *newline = '\0';
         }
 
+        // Exit the loop if there are no more line to read
+        if (fgets(array[countRows], maxRows, file) == NULL) {
+            break; // Exit the loop if there are no more lines
+        }
 
         /*
          // TODO: This is for testing
@@ -41,12 +57,8 @@ void read_file(char *filename, int maxRows, char ***array) {
         }
          */
     }
-    // TODO Remove the newline character from the end of the string
-/*    char *newline = strtok((*array)[countRows], "\n");
-    if (newline != NULL) {
-        *newline = '\0';
-    }
-*/
+
+
     fclose(file);
 }
 

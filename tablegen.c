@@ -16,11 +16,12 @@ char **arrayCountry;
 
 // Arrays generated, not read so not needed. We will use the struct array instead.
 // Lists to write with (defining uninitialized)
-int *arrayID;
+//int *arrayID;
+
 //char **arrayUserID;
 //char **arrayPhoneNumber;
 //char **arrayEmail;
-char **arraySIN;
+//char **arraySIN;
 //char **arrayPassword;
 
 int main(int argc, char **argv) {
@@ -100,9 +101,10 @@ int main(int argc, char **argv) {
             }
 
             // Read the files
-            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES, &arrayFirstName);
-            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES, &arrayLastName);
-            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_NAMES, &arrayCountry);
+            // We pass a reference to the array variable to give the function the ability to change the value of the array in the MAIN and update things.
+            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES, arrayFirstName);
+            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES, arrayLastName);
+            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_NAMES, arrayCountry);
 
 
             // TODO: GOOD MORNING. FIX THIS HERE. DO NOT FORGET TO CREATE A FREE FUNCTION.
