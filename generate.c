@@ -54,7 +54,7 @@ char *generate_phone_number(char **arrayName, int max) {
 // Function to generate an email address
 char *generate_email(char* first_name, char* last_name, char** email_suffixes, int max) {
     // Fixed buffer for email
-    char* email = (char*)malloc(100);
+    char* email = (char*)malloc(max);
 
     // Generate a random index for the email suffix
     int random_index_suffix = generate_random_number(max);
