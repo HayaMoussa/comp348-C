@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 
         // Looping through the "array" of columns saved in select_columns to generate
         int i;       // For loop of column values
-        for (i = 0; i <= (sizeof(columns) / sizeof(int)); ++i) // size of returns the size of THE pointer so need division
+        for (i = 0; columns[i] != -1; ++i)
         {
             switch(columns[i])
             {
@@ -124,6 +124,7 @@ int main(int argc, char **argv) {
                     // read_file("last_names.txt", MAX_NAMES, arrayLastName);
                     break;
 
+                    // TODO: WHY DOES IT NOT ENTER THIS? I CANT HAVE 4 COLUMNS :(
                 case 4:
                     // Need to dynamically allocate space - Free needed later
                     arrayCountry = (char **) malloc(MAX_COUNTRIES * sizeof(char *)); // Dynamically allocate memory
@@ -178,32 +179,57 @@ int main(int argc, char **argv) {
     free(arrayID);
 
     // todo: fix these free
-    /*
-    // Free the allocated memory for each string array when you are done
-    for (int i = 0; i < MAX_NAMES; i++) {
-        free(arrayFirstName[i]);
+    int i;
+    for (i = 0; columns[i] != -1; ++i)
+    {
+        switch(columns[i])
+        {
+            case 1:
+            {
+                // Free the allocated memory for each string array when you are done
+                for (int i = 0; i < MAX_NAMES; i++) {
+                    free(arrayFirstName[i]);
+                }
+
+                // Free the memory for the main array
+                free(arrayFirstName);
+            }
+
+            case 2:
+            {
+                // Free the allocated memory for each string array when you are done
+                for (int i = 0; i < MAX_NAMES; i++) {
+                    free(arrayFirstName[i]);
+                }
+
+                // Free the memory for the main array
+                free(arrayFirstName);
+            }
+
+            case 3: {
+                // Free the allocated memory for each string array when you are done
+                for (int i = 0; i < MAX_NAMES; i++) {
+                    free(arrayLastName[i]);
+                }
+
+                // Free the memory for the main array
+                free(arrayLastName);
+            }
+            case 4: {
+                // Free the allocated memory for each string array when you are done
+                for (int i = 0; i < MAX_COUNTRIES; i++) {
+                    free(arrayCountry[i]);
+                }
+
+                // Free the memory for the main array
+                free(arrayCountry);
+            }
+        }
     }
-
-    // Free the memory for the main array
-    free(arrayFirstName);
-
-    // Free the allocated memory for each string array when you are done
-    for (int i = 0; i < MAX_NAMES; i++) {
-        free(arrayLastName[i]);
-    }
-
-    // Free the memory for the main array
-    free(arrayLastName);
+    free(columns);
 
 
-    // Free the allocated memory for each string array when you are done
-    for (int i = 0; i < MAX_COUNTRIES; i++) {
-        free(arrayCountry[i]);
-    }
 
-    // Free the memory for the main array
-    free(arrayCountry);
-*/
     // Terminate program successfully
     return 0;
 }
@@ -243,7 +269,7 @@ void show_menu2() {
 void select_columns(int *columns) {
     int count = 0;                  // Initialize a count to keep track of the number of integers read, starts at 0
     char *inputColumns = NULL;      // Declare a pointer to store the "raw" char gotten from scanf.
-    //int *columns = NULL;            // Declare a pointer to store the casted integers used for manipulations - acts as main array
+    //int *columns = NULL;           // Declare a pointer to store the casted integers used for manipulations - acts as main array
 
     // Allocate memory for user input. 8 + 7 commas maximum.
     inputColumns = (char *) malloc(sizeof(int) * 16);  // Allocate memory for user input
