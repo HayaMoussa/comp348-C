@@ -1,6 +1,7 @@
 // Libraries
 #include <stdio.h>
 #include <stdlib.h> // for malloc
+
 #include <string.h>
 
 // User-defined
@@ -35,11 +36,34 @@ void read_file(char *filename, int maxRows, char **array) {
         // Create space for an array of characters for each row (index)
         array[countRows] = (char *) malloc(64); // Assuming a string of country, name, etc is never more thatn 64 bytes
 
+        // TODO: WHY IS THIS NOT WORKING. NEW LINE ALWAYS SHOWING UP!
+        // Remove the newline character from the end of the string
+        char *newline = strtok(array[countRows], "\n");
+        if (newline != NULL) {
+            // Optionally remove carriage return character if present
+            strtok(newline, "\r");
+        }
+
+            /*
+            char *str = strdup(array[countRows]);
+            if (str != NULL) {
+                free(array[countRows]); // Free the original string
+                array[countRows] = str; // Update the array with the duplicated string
+            }
+             */
+
+
         // Remove newline character if present
+        /*
         char *newline = strchr(array[countRows], '\n');
         if (newline != NULL) {
             *newline = '\0';
         }
+         */
+        /*
+        if (strcmp(array[countRows], "\n") == 0) {
+            array[countRows] = '\0';
+         }*/
 
         // Exit the loop if there are no more line to read
         if (fgets(array[countRows], maxRows, file) == NULL) {
@@ -62,6 +86,7 @@ void read_file(char *filename, int maxRows, char **array) {
     fclose(file);
 }
 
+/*
 void write_file(char *filename, int *columns, int rowCount) {
     // Open the file for writing and overwrite if needed
     FILE *file = fopen(filename, "wt");
@@ -177,3 +202,4 @@ void write_file(char *filename, int *columns, int rowCount) {
     // Close file once writing is completed
     fclose(file);
 }
+ */

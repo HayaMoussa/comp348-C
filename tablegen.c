@@ -101,11 +101,18 @@ int main(int argc, char **argv) {
             }
 
             // Read the files
-            // We pass a reference to the array variable to give the function the ability to change the value of the array in the MAIN and update things.
+            // For Windows
+
             read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES, arrayFirstName);
             read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES, arrayLastName);
-            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_NAMES, arrayCountry);
+            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_COUNTRIES, arrayCountry);
 
+            // For Linux
+            /*
+            read_file("first_names.txt", MAX_NAMES, arrayFirstName);
+            read_file("last_names.txt", MAX_NAMES, arrayLastName);
+            read_file("countries.txt", MAX_COUNTRIES, arrayCountry);
+            */
 
             // TODO: GOOD MORNING. FIX THIS HERE. DO NOT FORGET TO CREATE A FREE FUNCTION.
             users[i].user_id = generate_userID();
@@ -113,7 +120,7 @@ int main(int argc, char **argv) {
             users[i].last_name = generate_element(arrayLastName, MAX_NAMES);
             users[i].country = generate_element(arrayCountry, MAX_COUNTRIES);
             users[i].phone_number = generate_phone_number(phone_area_array, nbr_phone_area);
-            //users[i].sin = generate_SIN(arraySIN, rowCount);
+            //users[i].sin = generate_SIN(users, rowCount);
             users[i].password = generate_password(6, 16);
             users[i].email = generate_email(users[i].first_name, users[i].last_name, email_suffixes, nbr_suffix);
 
@@ -257,7 +264,8 @@ int main(int argc, char **argv) {
 
         // TODO: WRITE TO FILE
         // Adding the .csv suffix when writing file
-        write_file(strcat(filename, ".csv"), columns, rowCount);
+
+        //write_file(strcat(filename, ".csv"), columns, rowCount);
 
     }
     else if (choice == 2)

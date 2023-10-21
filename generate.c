@@ -69,8 +69,9 @@ char *generate_email(char* first_name, char* last_name, char** email_suffixes, i
     return email;
 }
 
+/*
+char *generate_SIN(struct UserData *users, int max) {
 
-char *generate_SIN(char **arrayName, int max) {
     // Allocate memory for 9 digits + null terminator
     char *sin = (char*)malloc(10);
 
@@ -88,9 +89,12 @@ char *generate_SIN(char **arrayName, int max) {
         sin[9] = '\0';  // Null-terminate the string
 
         // CHECK UNIQUENESS OF GENERATED SIN
-        int unique = 1;
-        for (int i=0; i < max; i++) {
-            unique = strcmp(arrayName[i], sin); // strcmp will return 0 if matching string in array, so not unique
+        int is_unique = 1;
+        for (int i = 0; i < max; i++) {
+            if (strcmp(generated_sin, user_data[i].sin) == 0) { // strcmp will return 0 if matching string in array, so not unique
+                is_unique = 0;
+                break;
+            }
         }
 
         if (unique == 1 ) // still unique, we can return, otherwise restart with infinite loop
@@ -99,6 +103,7 @@ char *generate_SIN(char **arrayName, int max) {
         }
     }
 }
+ */
 
 // Function to generate a random password
 char *generate_password(int min_length, int max_length) {
