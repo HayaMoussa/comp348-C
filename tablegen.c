@@ -3,60 +3,51 @@
                             Haya Moussa - 40245661
 *******************************************************************************/
 
-// Libraries
-#include <stdio.h>
-#include <stdlib.h> // for clear
-#include <string.h> // for strtok
-#include <time.h> // for srand time
+#include "tablegen.h"
 
+// Saved list
+// Create an instance of the UserData struct using pointers
+struct UserData* user_data;
 
-// User-defined
-#include "generate.h"
-#include "io.h"
-
-// Method signatures, todo: fix manual inclusion?
-void show_menu1();
-void show_menu2();
-void select_columns();
-void select_outputName();
-
-//TODO: Remove this constant if not used
-#define MAX_NAMES 1000
-#define MAX_COUNTRIES 195
-
-//TODO: Remove this if no global variable used
-//extern int rowCount;
-
-// Lists to write with (defining uninitialized)
-int *arrayID;
+// All data read and saved will be stored in this list
 char **arrayFirstName;
 char **arrayLastName;
 char **arrayCountry;
 
+// Arrays generated, not read so not needed. We will use the struct array instead.
+// Lists to write with (defining uninitialized)
+int *arrayID;
+//char **arrayUserID;
+//char **arrayPhoneNumber;
+//char **arrayEmail;
+char **arraySIN;
+//char **arrayPassword;
+
 int main(int argc, char **argv) {
+
     // TODO: remove this before submitting
     setbuf(stdout, 0);
 
-    // Create a seed for every execution used to generate random
+    // Create a seed needed for every execution, necessary to generate random
     srand(time(NULL));
-    /*
-    // Generate a random number
-    int rdm = generate_randomNumber(0,100);
-    printf("%d", rdm);
-     */
 
-    int choice = 0;      // 1 or 2 for show_menu1(). Automatic allocation so no free needed
-    int rowCount = 0;
-    // Declare string outputFile = NULL using malloc since we do not know length of name
-    int *columns = (int *)malloc(sizeof(int)); // NEED TO ALLOCATE END OF STRING!! +1
+    // Lists to use for generation
+    char *email_suffixes[] = {"hotmail.com", "gmail.com", "yahoo.com", NULL};
+    int nbr_suffix = count_array_elements(email_suffixes);
 
-    // TODO: DO I NEED THIS
-    //char *outputFile = (char *)malloc(sizeof(char));  // NEED TO ALLOCATE END OF STRING!! +1;
+    char *phone_area_array[] = {"398", "270", "925", "867", "209", "429", "908", "997", "444", "219", NULL};
+    int nbr_phone_area = count_array_elements(phone_area_array);
 
 
+    // Declaration and initialization (automatic allocation = no free needed)
+    int choice = 0;          // 1 or 2 for show_menu1(). Automatic allocation so no free needed
+    int rowCount = 0;        // User input
+
+    // Declare string using malloc since we do not know how many columns will be entered by user
+    int *columns = (int *)malloc(sizeof(int)); // NEED TO ALLOCATE END OF STRING!! +1?
 
     // Call method to show menu
-    show_menu1(choice);
+    show_menu1();
     
 	// User input for main menu as an int
     fscanf(stdin,"%d", &choice);
@@ -71,6 +62,9 @@ int main(int argc, char **argv) {
         printf("Enter row count (1 < n < 1M):");
         scanf("%d", &rowCount);
 
+        // Create an instance of the struct
+        struct UserData *users = (struct UserData*)malloc(rowCount * sizeof(struct UserData));
+
         // User input for the name of the csv file
         printf("Enter output file name (no suffix):");
         char filename[256]; // Assuming a maximum file name size of 255 characters
@@ -78,6 +72,103 @@ int main(int argc, char **argv) {
             printf("File name entered: %s\n", filename);
         }
 
+        for (int i = 0; i < rowCount; i++) {
+        {
+            // Allocate memory for each properties of the struct
+            // user_data[i].user_id will use automatic allocation
+            users[i].first_name = (char*)malloc(MAX_NAMES);
+            users[i].last_name = (char*)malloc(MAX_NAMES);
+            users[i].country = (char*)malloc(MAX_COUNTRIES);
+            users[i].phone_number = (char*)malloc(10);          // Phone number format: "xxx-xxxx" + null terminator
+            users[i].sin = (char*)malloc(10);                   // SIN format: "xxxxxxxxx" + null terminator
+            users[i].password = (char*)malloc(17);              // Assuming a max password length of 16 + null terminator
+            users[i].email = (char*)malloc(100);                // Assuming a max email length of 99 + null terminator
+
+            // Allocate memory for the array where read elements will be saved. Use constant for nbr of lines in each file.
+            arrayFirstName = (char **)malloc(sizeof(char *) * MAX_NAMES);
+            arrayLastName = (char **)malloc(sizeof(char *) * MAX_NAMES);
+            arrayCountry = (char **)malloc(sizeof(char *) * MAX_COUNTRIES);
+
+            // Initialize each element to NULL (important to terminate the array)
+            for (int i = 0; i < MAX_NAMES; i++) {
+                arrayFirstName[i] = NULL;
+                arrayLastName[i] = NULL;
+            }
+            // Initialize each element to NULL (important to terminate the array)
+            for (int i = 0; i < MAX_COUNTRIES; i++) {
+                arrayCountry[i] = NULL;
+            }
+
+            // Read the files
+            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES, &arrayFirstName);
+            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES, &arrayLastName);
+            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_NAMES, &arrayCountry);
+
+
+            // TODO: GOOD MORNING. FIX THIS HERE. DO NOT FORGET TO CREATE A FREE FUNCTION.
+            users[i].user_id = generate_userID();
+            users[i].first_name = generate_element(arrayFirstName, MAX_NAMES);
+            users[i].last_name = generate_element(arrayLastName, MAX_NAMES);
+            users[i].country = generate_element(arrayCountry, MAX_COUNTRIES);
+            users[i].phone_number = generate_phone_number(phone_area_array, nbr_phone_area);
+            //users[i].sin = generate_SIN(arraySIN, rowCount);
+            users[i].password = generate_password(6, 16);
+            users[i].email = generate_email(users[i].first_name, users[i].last_name, email_suffixes, nbr_suffix);
+
+            // Print or use the generated data as needed
+            printf("User ID: %d\n", users[i].user_id); //working
+            printf("First Name: %s\n", users[i].first_name); //working
+            printf("Last Name: %s\n", users[i].last_name); //not working
+            printf("Country: %s\n", users[i].country); // not working
+            printf("Phone Number: %s\n", users[i].phone_number); // working
+            //printf("SIN: %s\n", users[i].sin); //not working
+            printf("Password: %s\n", users[i].password); //working
+            printf("Email: %s\n", users[i].email); //half working
+        }
+
+        // TODO: Put free memory at the right place
+        free_memory(users,rowCount);
+
+
+                /*
+                    switch (columns[i]) {
+                        case USER_ID:
+                        {
+                            printf("UserID");
+                        }
+                        case FIRST_NAME:
+                        {
+                            printf("UserID");
+                        }
+                        case LAST_NAME:
+                        {
+                            printf("UserID");
+                        }
+                        case COUNTRY:
+                        {
+                            printf("UserID");
+                        }
+                        case PHONE_NUMBER:
+                        {
+                            printf("UserID");
+                        }
+                        case EMAIL:
+                        {
+                            printf("UserID");
+                        }
+                        case SIN:
+                        {
+                            printf("UserID");
+                        }
+                        case PASSWORD:
+                        {
+                            printf("UserID");
+                        }
+                    }
+                    */
+        }
+
+        /*
         // Looping through the "array" of columns saved in select_columns to generate
         int i;       // For loop of column values
         for (i = 0; columns[i] != -1; ++i)
@@ -152,6 +243,7 @@ int main(int argc, char **argv) {
                     break;
             }
         }
+         */
 
         //select_outputName();
 
@@ -172,9 +264,11 @@ int main(int argc, char **argv) {
     }
 
 
+
     /************************************
      * FREE MEMORY
      ***********************************/
+    /*
     // Free the space for previous malloc
     free(arrayID);
 
@@ -228,7 +322,7 @@ int main(int argc, char **argv) {
     }
     free(columns);
 
-
+    */
 
     // Terminate program successfully
     return 0;
@@ -264,6 +358,42 @@ void show_menu2() {
     printf("4. Country            8. Password\n\n");
 
     printf("Enter column list (comma separated, no spaces):");
+}
+
+void free_memory(struct UserData *users, int rowCount) {
+    // Free memory for struct arrays
+    for (int i = 0; i < rowCount; i++) {
+        free(users[i].first_name);
+        free(users[i].last_name);
+        free(users[i].country);
+        free(users[i].phone_number);
+        free(users[i].sin);
+        free(users[i].password);
+        free(users[i].email);
+    }
+    free(users); // Free the memory for the array of struct
+
+    // Free memory for name arrays
+    for (int i = 0; i < MAX_NAMES; i++) {
+        free(arrayFirstName[i]);
+        free(arrayLastName[i]);
+    }
+    free(arrayFirstName);
+    free(arrayLastName);
+
+    // Free memory for country array
+    for (int i = 0; i < MAX_COUNTRIES; i++) {
+        free(arrayCountry[i]);
+    }
+    free(arrayCountry);
+}
+
+int count_array_elements(char **arrayName){
+    int nbr_elements = 0;
+    while (arrayName[nbr_elements] != NULL) {
+        nbr_elements++;
+    }
+    return nbr_elements;
 }
 
 void select_columns(int *columns) {

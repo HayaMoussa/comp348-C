@@ -8,7 +8,7 @@
 #include "io.h"
 
 
-void read_file(char *filename, int maxRows, char **buffer) {
+void read_file(char *filename, int maxRows, char ***array) {
     // TODO: Full windows path on my laptop needed!! C:\Users\Haya\Documents\Docker\comp348\countries.txt
     FILE *file = fopen(filename, "r");
 
@@ -21,13 +21,14 @@ void read_file(char *filename, int maxRows, char **buffer) {
     int countRows;
     for (countRows = 0; countRows < maxRows; ++countRows) {
         // Create space for an array of characters for each row (index)
-        buffer[countRows] = (char *) malloc(maxRows); // Assuming a maximum line length of 64 bytes
+        (*array)[countRows] = (char *) malloc(maxRows); // Assuming a maximum line length of 64 bytes
 
 
         // Exit the loop if there are no more line to read
-        if (fgets(buffer[countRows], maxRows, file) == NULL) {
+        if (fgets((*array)[countRows], maxRows, file) == NULL) {
             break; // Exit the loop if there are no more lines
         }
+
 
         /*
          // TODO: This is for testing
@@ -40,7 +41,12 @@ void read_file(char *filename, int maxRows, char **buffer) {
         }
          */
     }
-
+    // TODO Remove the newline character from the end of the string
+/*    char *newline = strtok((*array)[countRows], "\n");
+    if (newline != NULL) {
+        *newline = '\0';
+    }
+*/
     fclose(file);
 }
 
@@ -81,7 +87,7 @@ void write_file(char *filename, int *columns, int rowCount) {
                     }
                     else
                     {
-                        char *randomFirstName = selectRandomElement(arrayFirstName, MAX_NAMES);
+                        char *randomFirstName = generate_element(arrayFirstName, MAX_NAMES);
                         fprintf(file, "%s", strtok(randomFirstName, "\n"));
                     }
                     break;
@@ -92,7 +98,7 @@ void write_file(char *filename, int *columns, int rowCount) {
                     }
                     else
                     {
-                        char *randomLastName = selectRandomElement(arrayLastName, MAX_NAMES);
+                        char *randomLastName = generate_element(arrayLastName, MAX_NAMES);
                         fprintf(file, "%s", strtok(randomLastName, "\n"));
                     }
                     break;
@@ -103,7 +109,7 @@ void write_file(char *filename, int *columns, int rowCount) {
                     }
                     else
                     {
-                        char *randomCountry = selectRandomElement(arrayCountry, MAX_COUNTRIES);
+                        char *randomCountry = generate_element(arrayCountry, MAX_COUNTRIES);
                         fprintf(file, "%s", strtok(randomCountry, "\n"));
                     }
                     break;
