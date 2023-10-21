@@ -21,10 +21,8 @@ int generate_userID() {
  */
 char *generate_element(char **arrayName, int max) {
     int random_index = generate_random_number(max);
-    return arrayName[random_index];
+    char *element = strdup(arrayName[random_index]);
 
-    /*
-     *     char *element = strndup(arrayName[random_index], MAX_ELEMENT_LENGTH); // Duplicate with a maximum length
     if (element != NULL) {
         // Remove newline characters if present
         char *newline = strchr(element, '\n');
@@ -32,8 +30,9 @@ char *generate_element(char **arrayName, int max) {
             *newline = '\0';
         }
     }
+
     return element;
-     * */
+
 }
 
 char *generate_phone_number(char **arrayName, int max) {
