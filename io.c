@@ -64,120 +64,89 @@ void read_file(char *filename, int maxRows, char **array) {
     fclose(file);
 }
 
-/*
-void write_file(char *filename, int *columns, int rowCount) {
+
+
+void write_file(const char *filename, const int *columns, const struct UserData *users, int row_count, int count_columns) {
     // Open the file for writing and overwrite if needed
     FILE *file = fopen(filename, "wt");
 
-    // Looping through the "array" of columns saved in select_columns to generate header
-    int columnIndex;        // For loop of column values
-    int rowWritten;         // For loop of rows (includes header)
+    if (file == NULL) {
+        perror("Error opening the file");
+        return;
+    }
 
-    // How many columns to loop
-    int max = sizeof(columns) / sizeof(int);
+    // Write the header row
+    for (int i = -1; i <= count_columns; i++) {
+        int col = ;
+        if (i != 0) {
+            fprintf(file, ",");
+        }
+        switch (columns[i] && i == -1) {
+            case USER_ID:
+                fprintf(file, "User ID");
+                break;
+            case FIRST_NAME:
+                fprintf(file, "First Name");
+                break;
+            case LAST_NAME:
+                fprintf(file, "Last Name");
+                break;
+            case COUNTRY:
+                fprintf(file, "Country");
+                break;
+            case PHONE_NUMBER:
+                fprintf(file, "Phone Number");
+                break;
+            case EMAIL:
+                fprintf(file, "Email Address");
+                break;
+            case SIN:
+                fprintf(file, "SIN");
+                break;
+            case PASSWORD:
+                fprintf(file, "Password");
+                break;
+        }
+    }
+    fprintf(file, "\n");
 
-    // TODO: Teacher used fput? I used fprintf for it's formatting options.
-    for (rowWritten = -1; rowWritten < rowCount; ++rowWritten) // starts at -1 for row header.
-    {
-        // Looping through the "array" of columns saved in select_columns to generate data
-        for (columnIndex = 0; columnIndex <= max; ++columnIndex) // size of returns the size of THE pointer so need division
-        {
-            switch (columns[columnIndex]) {
-                case 1:
-                    // This writes the header
-                    if (rowWritten==-1)
-                    {
-                        fprintf(file,"User ID");
-                    }
-                    // This writes the data
-                    else
-                    {
-                        fprintf(file, "%d", arrayID[rowWritten]);
-                    }
-                    break;
-                case 2:
-                    if (rowWritten==-1)
-                    {
-                        fprintf(file,"First Name");
-                    }
-                    else
-                    {
-                        char *randomFirstName = generate_element(arrayFirstName, MAX_NAMES);
-                        fprintf(file, "%s", strtok(randomFirstName, "\n"));
-                    }
-                    break;
-                case 3:
-                    if (rowWritten==-1)
-                    {
-                        fprintf(file,"Last Name");
-                    }
-                    else
-                    {
-                        char *randomLastName = generate_element(arrayLastName, MAX_NAMES);
-                        fprintf(file, "%s", strtok(randomLastName, "\n"));
-                    }
-                    break;
-                case 4:
-                    if (rowWritten==-1)
-                    {
-                        fprintf(file,"Country");
-                    }
-                    else
-                    {
-                        char *randomCountry = generate_element(arrayCountry, MAX_COUNTRIES);
-                        fprintf(file, "%s", strtok(randomCountry, "\n"));
-                    }
-                    break;
-                case 5: // Phone Number
-                    if (rowWritten==-1)
-                    {
-                        fprintf(file,"Phone Number");
-                    }
-                    else
-                    {
-                        fprintf(file, "NOPE");
-                    }
-                    break;
-                case 6: // Email Address
-                    if (rowWritten==-1)
-                    {
-                        fprintf(file,"Email Address");
-                    }
-                    else
-                    {
-                        fprintf(file, "NOPE");
-                    }
-                    break;
-                case 7: // SIN
-                    if (rowWritten==-1)
-                    {
-                        fprintf(file,"SIN");
-                    }
-                    else
-                    {
-                        fprintf(file, "NOPE");
-                    }
-                    break;
-                case 8: // Password
-                    if (rowWritten==-1)
-                    {
-                        fprintf(file,"Password");
-                    }
-                    else
-                    {
-                        fprintf(file, "NOPE");
-                    }
-            }
-
-            // If last one, do not print a comma
-            if (columnIndex != max) {
+    // Write the data rows
+    for (int i = 0; i < row_count; i++) {
+        for (int j = 0; j < count_columns; j++) {
+            int col = columns[j];
+            if (j != 0) {
                 fprintf(file, ",");
+            }
+            switch (col) {
+                case USER_ID:
+                    fprintf(file, "%d", users[i].user_id);
+                    break;
+                case FIRST_NAME:
+                    fprintf(file, "%s", users[i].first_name);
+                    break;
+                case LAST_NAME:
+                    fprintf(file, "%s", users[i].last_name);
+                    break;
+                case COUNTRY:
+                    fprintf(file, "%s", users[i].country);
+                    break;
+                case PHONE_NUMBER:
+                    fprintf(file, "%s", users[i].phone_number);
+                    break;
+                case EMAIL:
+                    fprintf(file, "%s", users[i].email);
+                    break;
+                case SIN:
+                    fprintf(file, "%s", users[i].sin);
+                    break;
+                case PASSWORD:
+                    fprintf(file, "%s", users[i].password);
+                    break;
             }
         }
         fprintf(file, "\n");
     }
 
-    // Close file once writing is completed
+    // Close the file once writing is completed
     fclose(file);
 }
- */

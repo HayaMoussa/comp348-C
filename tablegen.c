@@ -159,6 +159,8 @@ int main(int argc, char **argv)
         }
         // Print or use the generated data as needed
 
+        //CHATGPT, INSERT WRITE FILE HERE!
+        // write_file(strcat(filename, ".csv"), columns);
 
         // TODO: Put free memory at the right place
         free_memory(users, rowCount);
