@@ -1,13 +1,4 @@
-// Libraries
-#include <stdio.h>
-#include <stdlib.h> // for malloc
-
-#include <string.h>
-
-// User-defined
-#include "generate.h"
 #include "io.h"
-
 
 /***
  *
@@ -21,31 +12,37 @@
  *          **array: Gives you a mega-list of all names, countries, etc. This is a list similar to a "page" that saves all the individual strings from the previous "level" (countries, first name, etc.) in one space
  *          *array[countRows]: access to a particular name, country, etc within the page.
  */
-void read_file(char *filename, int maxRows, char **array) {
+void read_file(char *filename, int maxRows, char **array)
+{
     // TODO: Full windows path on my laptop needed!! C:\Users\Haya\Documents\Docker\comp348\countries.txt
     FILE *file = fopen(filename, "r");
 
     // Message error and exit function if that file does not exist
-    if (file == NULL) {
+    if (file == NULL)
+    {
         perror("Error opening the file");
         return;
     }
 
     int countRows;
-    for (countRows = 0; countRows < maxRows; ++countRows) {
+    for (countRows = 0; countRows < maxRows; ++countRows
+            )
+    {
         // Create space for an array of characters for each row (index)
         array[countRows] = (char *) malloc(64); // Assuming a string of country, name, etc is never more thatn 64 bytes
 
         // TODO: WHY IS THIS NOT WORKING. NEW LINE ALWAYS SHOWING UP!
         // Remove the newline character from the end of the string
         char *newline = strtok(array[countRows], "\n");
-        if (newline != NULL) {
+        if (newline != NULL)
+        {
             // Optionally remove carriage return character if present
             strtok(newline, "\r");
         }
 
         // Exit the loop if there are no more line to read
-        if (fgets(array[countRows], maxRows, file) == NULL) {
+        if (fgets(array[countRows], maxRows, file) == NULL)
+        {
             break;
         }
 
@@ -65,88 +62,103 @@ void read_file(char *filename, int maxRows, char **array) {
 }
 
 
-
-void write_file(const char *filename, const int *columns, const struct UserData *users, int row_count, int count_columns) {
+void write_file(const char *filename, const int *columns, struct UserData *users, int row_count, int count_columns)
+{
     // Open the file for writing and overwrite if needed
     FILE *file = fopen(filename, "wt");
 
-    if (file == NULL) {
+    if (file == NULL)
+    {
         perror("Error opening the file");
         return;
     }
 
+
     // Write the header row
-    for (int i = -1; i <= count_columns; i++) {
-        int col = ;
-        if (i != 0) {
+    for (int i = 0; i < count_columns; i++)
+    {
+        if (columns[i] == USER_ID)
+        {
+            fprintf(file, "User ID");
+        } else if (columns[i] == FIRST_NAME)
+        {
+            fprintf(file, "First Name");
+        } else if (columns[i] == LAST_NAME)
+        {
+            fprintf(file, "Last Name");
+        } else if (columns[i] == COUNTRY)
+        {
+            fprintf(file, "Country");
+        } else if (columns[i] == PHONE_NUMBER)
+        {
+            fprintf(file, "Phone Number");
+        } else if (columns[i] == EMAIL)
+        {
+            fprintf(file, "Email Address");
+        } else if (columns[i] == SIN)
+        {
+            fprintf(file, "SIN");
+        } else if (columns[i] == PASSWORD)
+        {
+            fprintf(file, "Password");
+        }
+
+        // Last element in header should not have a comma, but others should.
+        if (i != count_columns-1)
+        {
             fprintf(file, ",");
         }
-        switch (columns[i] && i == -1) {
-            case USER_ID:
-                fprintf(file, "User ID");
-                break;
-            case FIRST_NAME:
-                fprintf(file, "First Name");
-                break;
-            case LAST_NAME:
-                fprintf(file, "Last Name");
-                break;
-            case COUNTRY:
-                fprintf(file, "Country");
-                break;
-            case PHONE_NUMBER:
-                fprintf(file, "Phone Number");
-                break;
-            case EMAIL:
-                fprintf(file, "Email Address");
-                break;
-            case SIN:
-                fprintf(file, "SIN");
-                break;
-            case PASSWORD:
-                fprintf(file, "Password");
-                break;
-        }
     }
-    fprintf(file, "\n");
-
+    
+    fprintf(file,"\n");
+    
     // Write the data rows
-    for (int i = 0; i < row_count; i++) {
-        for (int j = 0; j < count_columns; j++) {
-            int col = columns[j];
-            if (j != 0) {
-                fprintf(file, ",");
-            }
-            switch (col) {
-                case USER_ID:
-                    fprintf(file, "%d", users[i].user_id);
-                    break;
-                case FIRST_NAME:
-                    fprintf(file, "%s", users[i].first_name);
-                    break;
-                case LAST_NAME:
-                    fprintf(file, "%s", users[i].last_name);
-                    break;
-                case COUNTRY:
-                    fprintf(file, "%s", users[i].country);
-                    break;
-                case PHONE_NUMBER:
-                    fprintf(file, "%s", users[i].phone_number);
-                    break;
-                case EMAIL:
-                    fprintf(file, "%s", users[i].email);
-                    break;
-                case SIN:
-                    fprintf(file, "%s", users[i].sin);
-                    break;
-                case PASSWORD:
-                    fprintf(file, "%s", users[i].password);
-                    break;
-            }
-        }
-        fprintf(file, "\n");
+    for (int row = 0; row < row_count; row++)
+    {
+      for (int col = 0; col < count_columns; col++) 
+      {
+          if (columns[col] == USER_ID)
+          {
+              fprintf(file,"%d", users[row].user_id);
+          }
+          else if (columns[col] == FIRST_NAME)
+          {
+              fprintf(file,"%s", users[row].first_name);
+          }
+          else if (columns[col] == LAST_NAME)
+          {
+              fprintf(file,"%s", users[row].last_name);
+          }
+          else if (columns[col] == COUNTRY)
+          {
+              fprintf(file,"%s", users[row].country);
+          }
+          else if (columns[col] == PHONE_NUMBER)
+          {
+              fprintf(file,"%s", users[row].phone_number);
+          }
+          else if (columns[col] == EMAIL)
+          {
+              fprintf(file,"%s", users[row].email);
+          }
+          else if (columns[col] == SIN)
+          {
+              fprintf(file,"%s", users[row].sin);
+          }
+          else if (columns[col] == PASSWORD)
+          {
+              fprintf(file,"%s", "%s", users[row].password);
+          }
+          // Last element in row should not have a comma, but others should.
+          if (col != count_columns-1)
+          {
+              fprintf(file, ",");
+          }
+      }
+      fprintf(file, "\n");
     }
-
+    
     // Close the file once writing is completed
     fclose(file);
 }
+
