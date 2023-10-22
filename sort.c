@@ -1,4 +1,5 @@
 #include "sort.h"
+#include "tablegen.h" //for struct
 
 // this seems to work in print but not in file
 int compare_data(const void *a, const void *b) {

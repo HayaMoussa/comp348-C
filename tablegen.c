@@ -151,7 +151,7 @@ int main(int argc, char **argv)
                     }
                     else if (columns[j] == EMAIL)
                     {
-                        strcpy(users[i].email, generate_email(users[i].first_name, users[i].last_name, email_suffixes, 100)); //assume a max of 100 char
+                        strcpy(users[i].email, generate_email(users[i].first_name, users[i].last_name, email_suffixes, nbr_suffix)); //assume a max of 100 char
                         printf("Email: %s\n", users[i].email); //half working
                     }
                     else if (columns[j] == SIN)
@@ -166,7 +166,6 @@ int main(int argc, char **argv)
                     }
                 }
             }
-            // Print or use the generated data as needed
 
             // Sort before writing
             sortedBy = columns[0]; // insert into global variable
@@ -308,14 +307,11 @@ void show_menu2()
 
     printf("Enter column list (comma separated, no spaces):");
 }
-
 void free_memory(struct UserData *users, int rowCount)
 {
     // Free memory for struct arrays
-    for (int i = 0; i < rowCount; i++
-            )
+    for (int i = 0; i < rowCount; i++)
     {
-        // TODO: Why does this break when i=1?
         free(users[i].first_name);
         free(users[i].last_name);
         free(users[i].country);
@@ -336,8 +332,7 @@ void free_memory(struct UserData *users, int rowCount)
     free(users); // Free the memory for the array of struct
 
     // Free memory for name arrays
-    for (int i = 0; i < MAX_NAMES; i++
-            )
+    for (int i = 0; i < MAX_NAMES; i++)
     {
         free(arrayFirstName[i]);
         free(arrayLastName[i]);
@@ -346,8 +341,7 @@ void free_memory(struct UserData *users, int rowCount)
     free(arrayLastName);
 
     // Free memory for country array
-    for (int i = 0; i < MAX_COUNTRIES; i++
-            )
+    for (int i = 0; i < MAX_COUNTRIES; i++)
     {
         free(arrayCountry[i]);
     }
@@ -421,9 +415,9 @@ void summarize(int *columns, int rowCount, char *filename, int count_columns) {
 }
 
 /* TODO: What is left
- * test thing for all options (more than 3 rows does not work...)
+ * test thing for all options (more than 3 rows does not work...) write read me
  * clean code + document
- * figure out why qsort will not work in linux
- * void summarize()
+ * free things
+ * figure out why qsort will not work in file
  * put linux file thingy
 */

@@ -1,3 +1,8 @@
+
+/*********************************
+ * generate.h
+ */
+
 // Include guards
 #ifndef COMP348_GENERATE_H
 #define COMP348_GENERATE_H
@@ -11,7 +16,9 @@
 #include <stdlib.h> //for rand()
 #include <string.h>
 
-#include "tablegen.h"
+// Forward declaration for struct UserData
+struct UserData;
+//#include "tablegen.h" // for struct
 
 int generate_random_number(int max);
 int generate_userID();

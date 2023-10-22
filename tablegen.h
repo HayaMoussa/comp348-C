@@ -1,3 +1,8 @@
+
+/*********************************
+ * tablegen.h
+ */
+
 #ifndef COMP348_TABLEGEN_H
 #define COMP348_TABLEGEN_H
 

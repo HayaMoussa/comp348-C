@@ -1,5 +1,5 @@
 #include "generate.h"
-//#include "io.h"
+#include "tablegen.h" // Include the header where struct UserData is defined
 
 
 int generate_random_number(int max) {
@@ -53,7 +53,7 @@ char *generate_phone_number(char **arrayName, int max) {
 // Function to generate an email address
 char *generate_email(char* first_name, char* last_name, char** email_suffixes, int max) {
     // Fixed buffer for email
-    char* email = (char*)malloc(max);
+    char* email = (char*)malloc(100);
 
     // Generate a random index for the email suffix
     int random_index_suffix = generate_random_number(max);
