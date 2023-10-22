@@ -6,14 +6,6 @@
 #ifndef COMP348_TABLEGEN_H
 #define COMP348_TABLEGEN_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-// For the row maximum in files
-#define MAX_NAMES 1000
-#define MAX_COUNTRIES 195
-
 // Libraries
 #include <stdio.h>
 #include <stdlib.h> // for clear
@@ -24,6 +16,10 @@
 #include "generate.h"
 #include "io.h"
 #include "sort.h"
+
+// For the row maximum in files
+#define MAX_NAMES 1000
+#define MAX_COUNTRIES 195
 
 // To help with the readability of the code
 #define USER_ID 1
@@ -51,12 +47,12 @@ void show_menu1();
 void show_menu2();
 int count_array_elements(char **arrayName);
 int select_columns(int *columns);
-void free_memory(struct UserData *users,int rowCount);
 void create_user(struct UserData *user);
 void initialize_read_arrays();
-void select_output_filename(char *filename, int max_length);
+void select_output_filename(char *filename);
 void select_row_count(int *rowCount);
 void summarize(int *columns, int rowCount, char *filename, int count_columns);
+void free_memory(struct UserData *users,int rowCount);
 
 
 #endif //COMP348_TABLEGEN_H

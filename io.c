@@ -1,7 +1,7 @@
 #include "io.h"
 
 /***
- *
+ * Function that reads the text file with the filename given and stores it in the array given.
  * @param filename
  * @param maxRows
  * @param ***array:
@@ -25,13 +25,11 @@ void read_file(char *filename, int maxRows, char **array)
     }
 
     int countRows;
-    for (countRows = 0; countRows < maxRows; ++countRows
-            )
+    for (countRows = 0; countRows < maxRows; ++countRows)
     {
         // Create space for an array of characters for each row (index)
         array[countRows] = (char *) malloc(64); // Assuming a string of country, name, etc is never more thatn 64 bytes
 
-        // TODO: WHY IS THIS NOT WORKING. NEW LINE ALWAYS SHOWING UP!
         // Remove the newline character from the end of the string
         char *newline = strtok(array[countRows], "\n");
         if (newline != NULL)
@@ -45,23 +43,20 @@ void read_file(char *filename, int maxRows, char **array)
         {
             break;
         }
-
-        /*
-         // TODO: This is for testing
-        // Remove the newline character from the end of the string
-        fprintf(stdout, "%s", strtok(buffer[countRows], "\n"));//  strtok(buffer[countRows], "\n");
-
-        // Print comma if not last element
-        if (countRows!=(maxRows-1)) {
-            fprintf(stdout,",");
-        }
-         */
     }
 
     fclose(file);
 }
 
-
+/***
+ * This function writes a header and the data generated for all the users in the given file.
+ * It is in csv format, comma delimited.
+ * @param filename filename with extension
+ * @param columns int columns entered by user
+ * @param users users containing all the properties already set
+ * @param row_count how many rows to loop for
+ * @param count_columns how many columns to loop for
+ */
 void write_file(const char *filename, const int *columns, struct UserData *users, int row_count, int count_columns)
 {
     // Open the file for writing and overwrite if needed
@@ -72,7 +67,6 @@ void write_file(const char *filename, const int *columns, struct UserData *users
         perror("Error opening the file");
         return;
     }
-
 
     // Write the header row
     for (int i = 0; i < count_columns; i++)
@@ -112,7 +106,7 @@ void write_file(const char *filename, const int *columns, struct UserData *users
     
     fprintf(file,"\n");
     
-    // Write the data rows
+    // Write the data rows column by column
     for (int row = 0; row < row_count; row++)
     {
       for (int col = 0; col < count_columns; col++) 

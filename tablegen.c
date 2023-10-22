@@ -13,6 +13,9 @@ int sortedBy;
 
 int main(int argc, char **argv)
 {
+    // This is needed to run on Windows
+    // setbuf(stdout, 0);
+
     // Lists to use for generation
     char *email_suffixes[] = {"hotmail.com", "gmail.com", "yahoo.com", NULL};
     int nbr_suffix = count_array_elements(email_suffixes);
@@ -20,23 +23,20 @@ int main(int argc, char **argv)
     char *phone_area_array[] = {"398", "270", "925", "867", "209", "429", "908", "997", "444", "219", NULL};
     int nbr_phone_area = count_array_elements(phone_area_array);
 
+    // Initialize the 'c' to the terminate character
     char proceed = '\0';
 
     do {
         // Declare string using malloc since we do not know how many columns will be entered by user
-        int *columns = (int *) malloc(sizeof(int)); // NEED TO ALLOCATE END OF STRING!! +1?
+        int *columns = (int *) malloc(sizeof(int));
 
-        // Declaration and initialization (automatic allocation = no free needed)
+        // Declaration and initialization using automatic allocation (no free needed)
         int choice = 0;          // 1 or 2 for show_menu1(). Automatic allocation so no free needed
-        int rowCount = 0;        // User input
-
-        // TODO: remove this before submitting
-        setbuf(stdout, 0);
+        int rowCount = 0;        // Provided by user input
 
         // Create a seed needed for every execution, necessary to generate random
         srand(time(NULL));
 
-        /******************************************************/
         // Call method to show menu
         show_menu1();
 
@@ -45,6 +45,7 @@ int main(int argc, char **argv)
 
         if (choice == 1)
         {
+            // Show the columns options
             show_menu2();
 
             // User input for the columns to generate
@@ -55,7 +56,7 @@ int main(int argc, char **argv)
 
             // User input for the name of the csv file
             char filename[MAX_FILE_NAME];                               // Assuming a fixed file name size
-            select_output_filename(filename, MAX_FILE_NAME);
+            select_output_filename(filename);
 
             // Allocate memory for the amount of user we will generate
             struct UserData *users = (struct UserData *) malloc(rowCount * sizeof(struct UserData *));
@@ -63,106 +64,109 @@ int main(int argc, char **argv)
             // Prepare the arrays to receive data from file
             initialize_read_arrays();
 
-
+            // Variables that act as booleans to avoid rereading from the .txt everytime
             int is_first_name_loaded = 0;
             int is_last_name_loaded = 0;
             int is_countries_loaded = 0;
 
-            for (int i = 0; i < rowCount; i++
-                    )
+            // Looping for each row desired
+            for (int i = 0; i < rowCount; i++)
             {
                 // Creating the memory for a user at that position in users
                 create_user(&users[i]);
 
                 for (int j = 0; j < count_columns; j++)
                 {
-
                     if (columns[j] == USER_ID)
                     {
                         users[i].user_id = generate_userID();
-                        printf("User ID: %d\n", users[i].user_id); //working
+                        //printf("User ID: %d\n", users[i].user_id);
                     }
                     else if (columns[j] == FIRST_NAME)
                     {
                         if (is_first_name_loaded == 0)
                         {
-/*
-                        read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES,
-                                  arrayFirstName);
- */
-                            //For linux
+                            // Absolute path needed to run on Windows IDE
+                            // read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES,arrayFirstName);
+
+                            // Read file and save in array for linux
                             read_file("first_names.txt", MAX_NAMES, arrayFirstName);
                             is_first_name_loaded = 1;
                         }
+                        // Fill the previous memory allocated using a generated first name
                         strcpy(users[i].first_name, generate_element(arrayFirstName, MAX_NAMES));
-                        printf("First Name: %s\n", users[i].first_name); //working
+
+                        // printf("First Name: %s\n", users[i].first_name);
                     }
                     else if (columns[j] == LAST_NAME)
                     {
                         if (is_last_name_loaded == 0)
                         {
-                            /*
-                            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES,
-                                      arrayLastName);
-                                      */
-                            // For linux
+                            // Absolute path needed to run on Windows IDE
+                            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES,arrayLastName);
+
+                            // Read file and save in array for linux
                             read_file("last_names.txt", MAX_NAMES, arrayLastName);
                             is_last_name_loaded = 1;
                         }
-
+                        // Fill the previous memory allocated using a generated last name
                         strcpy(users[i].last_name, generate_element(arrayLastName, MAX_NAMES));
-                        printf("Last Name: %s\n", users[i].last_name); //not working
-
+                        //printf("Last Name: %s\n", users[i].last_name); //not working
                     }
+
                     else if (columns[j] == COUNTRY)
                     {
                         if (is_countries_loaded == 0)
                         {
-                            /*
-                            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_COUNTRIES,
-                                      arrayCountry);
-                                      */
-                            // For linux
+                            // Absolute path needed to run on Windows IDE
+                            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_COUNTRIES,arrayCountry);
+
+                            // Read file and save in array for linux
                             read_file("countries.txt", MAX_COUNTRIES, arrayCountry); //this works
                             is_countries_loaded = 1;
                         }
+                        // Fill the previous memory allocated using a generated country
                         strcpy(users[i].country, generate_element(arrayCountry, MAX_COUNTRIES));
-                        printf("Country: %s\n", users[i].country); // not working
+                        //printf("Country: %s\n", users[i].country); // not working
                     }
+
                     else if (columns[j] == PHONE_NUMBER)
                     {
                         strcpy(users[i].phone_number, generate_phone_number(phone_area_array, nbr_phone_area));
-                        printf("Phone Number: %s\n", users[i].phone_number); // working
+                        //printf("Phone Number: %s\n", users[i].phone_number); // working
                     }
+
                     else if (columns[j] == EMAIL)
                     {
                         strcpy(users[i].email, generate_email(users[i].first_name, users[i].last_name, email_suffixes, nbr_suffix)); //assume a max of 100 char
-                        printf("Email: %s\n", users[i].email); //half working
+                        //printf("Email: %s\n", users[i].email); //half working
                     }
+
                     else if (columns[j] == SIN)
                     {
                         strcpy(users[i].sin, generate_SIN(users, rowCount));
-                        printf("SIN: %s\n", users[i].sin); //not working
+                        //printf("SIN: %s\n", users[i].sin); //not working
                     }
+
                     else if (columns[j] == PASSWORD)
                     {
                         strcpy(users[i].password, generate_password(6, 16));
-                        printf("Password: %s\n", users[i].password); //working
+                        //printf("Password: %s\n", users[i].password); //working
                     }
                 }
             }
 
-            // Sort before writing
-            sortedBy = columns[0]; // insert into global variable
+            // Save first column into global variable to use it in sort.c
+            sortedBy = columns[0];
             qsort(users, rowCount, sizeof(struct UserData), compare_data);
 
             // Write the file
             write_file(strcat(filename, ".csv"), columns, users, rowCount, count_columns);
 
-            // TODO: Put free memory at the right place after adjusting
+            // TODO: Free memory is not working properly
             // free_memory(users, rowCount);
 
-            // Text to show results
+            // Summary test to show results
             summarize(columns, rowCount, filename, count_columns);
         }
 
@@ -180,22 +184,33 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void select_output_filename(char *filename, int max_length)
+/***
+ * Function to prompt user for a file name for the .csv file.
+ * @param filename string entered by user
+ */
+void select_output_filename(char *filename)
 {
     printf("Enter output file name (no suffix): ");
-    scanf("%255s", filename); // Limit input to 255 characters
+    scanf("%s", filename);
 }
 
+/***
+ * Function to prompt user for how many users they want.
+ * @param rowCount how many rows to generate in .csv file
+ */
 void select_row_count(int *rowCount)
 {
     printf("Enter row count (1 < n < 1M): ");
     scanf("%d", rowCount);
 }
 
+/***
+ * Function that allocates memory for each property of a user and fills it will null characters.
+ * @param user
+ */
 void create_user(struct UserData *user)
 {
     // Access member of a struct to allocate memory SAME AS (*user).first_name (dereference and access it's member)
-
     user->first_name = (char *) malloc(MAX_NAMES);
     user->last_name = (char *) malloc(MAX_NAMES);
     user->country = (char *) malloc(MAX_COUNTRIES);
@@ -235,6 +250,11 @@ void create_user(struct UserData *user)
     }
 }
 
+/***
+ * Function to allocate memory for the lists that will be read from the txt files
+ * @param void
+ * @return void
+ */
 void initialize_read_arrays()
 {
     // Allocate memory for the array where read elements will be saved. Use constant for nbr of lines in each file.
@@ -243,19 +263,17 @@ void initialize_read_arrays()
     arrayCountry = (char **) malloc(sizeof(char *) * MAX_COUNTRIES);
 
     // Initialize each element to NULL (important to terminate the array)
-    for (int i = 0; i < MAX_NAMES; i++
-            )
+    for (int i = 0; i < MAX_NAMES; i++)
     {
         arrayFirstName[i] = NULL;
         arrayLastName[i] = NULL;
     }
+
     // Initialize each element to NULL (important to terminate the array)
-    for (int i = 0; i < MAX_COUNTRIES; i++
-            )
+    for (int i = 0; i < MAX_COUNTRIES; i++)
     {
         arrayCountry[i] = NULL;
     }
-
 }
 
 
@@ -292,6 +310,8 @@ void show_menu2()
 
     printf("Enter column list (comma separated, no spaces):");
 }
+
+
 /*
 void free_memory(struct UserData *users, int rowCount)
 {
@@ -335,6 +355,11 @@ void free_memory(struct UserData *users, int rowCount)
 }
  */
 
+/**
+ * Flexible function to count how many arrays without having to use sizeof() and calculations
+ * @param arrayName array for which you would like to return the nbr of element
+ * @return nbr_elements contained in array
+ */
 int count_array_elements(char **arrayName)
 {
     int nbr_elements = 0;
@@ -345,16 +370,21 @@ int count_array_elements(char **arrayName)
     return nbr_elements;
 }
 
+/**
+ * Function that splits
+ * @param columns : ints entered by user for which they would like to generate data
+ * @return count : how many columns entered by user
+ */
 int select_columns(int *columns)
 {
     int count = 0;                  // Initialize a count to keep track of the number of integers read, starts at 0
     char *inputColumns = NULL;      // Declare a pointer to store the "raw" char gotten from scanf.
-    //int *columns = NULL;           // Declare a pointer to store the casted integers used for manipulations - acts as main array
 
-    // Allocate memory for user input. 8 + 7 commas maximum.
+    // Allocate memory for user input. 8 + 7 commas maximum. char are smaller than ints but let's allocate extra space.
+    // Note: I THINK IT CRASHES WHEN YOU ENTER MORE COLUMSN BECAUSE OF THIS HERE, the realloc might not always work?
     inputColumns = (char *) malloc(sizeof(int) * 16);  // Allocate memory for user input
 
-    // User input of the columns // TODO: Should I put this back to c?
+    // User input of the columns
     scanf("%s", inputColumns);
 
     // Use strtok to return a pointer to the first CHARACTER of the first token.
@@ -385,6 +415,13 @@ int select_columns(int *columns)
     return count;
 }
 
+/***
+ * Function that shows a summary of what was entered by the user.
+ * @param columns int columns entered by user
+ * @param rowCount how many rows asked by user
+ * @param filename filename picked by user (with .csv extension that was added)
+ * @param count_columns how many columns entered
+ */
 void summarize(int *columns, int rowCount, char *filename, int count_columns) {
     printf("Summary of properties:\n");
     printf("  Columns: ");
@@ -405,12 +442,13 @@ void summarize(int *columns, int rowCount, char *filename, int count_columns) {
         filename[strlen(filename) - 4] = '\0';
     }
 
-    printf("  File name: %s\n",filename);
+    printf("  File name: %s\n\n",filename);
+    printf("Table written successfully to %s\n",filename);
+
 }
 
 /* TODO: What is left
  * test thing for all options (more than 3 rows does not work...) write read me
- * clean code + document
  * free things
  * figure out why qsort will not work in file
  * put linux file thingy
