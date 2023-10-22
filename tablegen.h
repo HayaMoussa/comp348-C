@@ -18,6 +18,7 @@
 // User-defined libraries
 #include "generate.h"
 #include "io.h"
+#include "sort.h"
 
 // To help with the readability of the code
 #define USER_ID 1
@@ -50,6 +51,7 @@ void create_user(struct UserData *user);
 void initialize_read_arrays();
 void select_output_filename(char *filename, int max_length);
 void select_row_count(int *rowCount);
+void show_continue();
 
 
 #endif //COMP348_TABLEGEN_H

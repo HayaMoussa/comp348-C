@@ -13,6 +13,7 @@ struct UserData *user_data;
 char **arrayFirstName;
 char **arrayLastName;
 char **arrayCountry;
+int sortedBy;
 
 // Arrays generated, not read so not needed. We will use the struct array instead.
 // Lists to write with (defining uninitialized)
@@ -97,11 +98,12 @@ int main(int argc, char **argv)
                 {
                     if (is_first_name_loaded == 0)
                     {
-
+/*
                         read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES,
                                   arrayFirstName);
+ */
                         //For linux
-                        //read_file("first_names.txt", MAX_NAMES, arrayFirstName);
+                        read_file("first_names.txt", MAX_NAMES, arrayFirstName);
                         is_first_name_loaded = 1;
                     }
                     strcpy(users[i].first_name, generate_element(arrayFirstName, MAX_NAMES));
@@ -111,10 +113,12 @@ int main(int argc, char **argv)
                 {
                     if (is_last_name_loaded == 0)
                     {
+                        /*
                         read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES,
                                   arrayLastName);
+                                  */
                         // For linux
-                        // read_file("last_names.txt", MAX_NAMES, arrayLastName);
+                        read_file("last_names.txt", MAX_NAMES, arrayLastName);
                         is_last_name_loaded = 1;
                     }
 
@@ -126,10 +130,12 @@ int main(int argc, char **argv)
                 {
                     if (is_countries_loaded == 0)
                     {
+                        /*
                         read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_COUNTRIES,
                                   arrayCountry);
+                                  */
                         // For linux
-                        //read_file("countries.txt", MAX_COUNTRIES, arrayCountry); //this works
+                        read_file("countries.txt", MAX_COUNTRIES, arrayCountry); //this works
                         is_countries_loaded = 1;
                     }
                     strcpy(users[i].country, generate_element(arrayCountry, MAX_COUNTRIES));
@@ -159,6 +165,10 @@ int main(int argc, char **argv)
         }
         // Print or use the generated data as needed
 
+        // Sort before writing
+        sortedBy = columns[0]; // insert into global variable
+        qsort(users, rowCount, sizeof(struct UserData), compare_data);
+
         // Write the file
         write_file(strcat(filename, ".csv"), columns, users, rowCount, count_columns);
 
@@ -170,6 +180,9 @@ int main(int argc, char **argv)
     {
         printf("Goodbye and thanks for using TableGen\n");
     }
+
+    // TODO: WHY IS THIS NOT WORKING? C MAKES ME EXIT
+    show_continue();
 
     // Terminate program successfully
     return 0;
@@ -343,6 +356,16 @@ int count_array_elements(char **arrayName)
     return nbr_elements;
 }
 
+void show_continue(){
+    char proceed;
+    printf("\nPress 'c' or 'C' to continue ");
+
+    do{
+        //MAIN CODE
+    scanf("%c", &proceed);
+    } while ( (proceed != 'c') && (proceed != 'C'));
+}
+
 int select_columns(int *columns)
 {
     int count = 0;                  // Initialize a count to keep track of the number of integers read, starts at 0
@@ -383,11 +406,12 @@ int select_columns(int *columns)
     return count;
 }
 
+
 /* TODO: What is left
- * test thing for all options
- * find out how to remove /n
+ * test thing for all options (more than 3 rows does not work...)
  * clean code + document
- * 1sort
+ * figure out why qsort will not work in linux
  * exit with c
  * void summarize()
+ * put linux file thingy
 */
