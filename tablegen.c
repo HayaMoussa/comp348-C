@@ -27,6 +27,7 @@ int sortedBy;
 
 int main(int argc, char **argv)
 {
+
     // Lists to use for generation
     char *email_suffixes[] = {"hotmail.com", "gmail.com", "yahoo.com", NULL};
     int nbr_suffix = count_array_elements(email_suffixes);
@@ -34,155 +35,162 @@ int main(int argc, char **argv)
     char *phone_area_array[] = {"398", "270", "925", "867", "209", "429", "908", "997", "444", "219", NULL};
     int nbr_phone_area = count_array_elements(phone_area_array);
 
-    // Declare string using malloc since we do not know how many columns will be entered by user
-    int *columns = (int *) malloc(sizeof(int)); // NEED TO ALLOCATE END OF STRING!! +1?
+    char proceed = '\0';
 
-    // Declaration and initialization (automatic allocation = no free needed)
-    int choice = 0;          // 1 or 2 for show_menu1(). Automatic allocation so no free needed
-    int rowCount = 0;        // User input
+    do {
+        // Declare string using malloc since we do not know how many columns will be entered by user
+        int *columns = (int *) malloc(sizeof(int)); // NEED TO ALLOCATE END OF STRING!! +1?
 
-    // TODO: remove this before submitting
-    setbuf(stdout, 0);
+        // Declaration and initialization (automatic allocation = no free needed)
+        int choice = 0;          // 1 or 2 for show_menu1(). Automatic allocation so no free needed
+        int rowCount = 0;        // User input
 
-    // Create a seed needed for every execution, necessary to generate random
-    srand(time(NULL));
+        // TODO: remove this before submitting
+        setbuf(stdout, 0);
 
-    /******************************************************/
-    // Call method to show menu
-    show_menu1();
+        // Create a seed needed for every execution, necessary to generate random
+        srand(time(NULL));
 
-    // User input for main menu as an int
-    fscanf(stdin, "%d", &choice);
+        /******************************************************/
+        // Call method to show menu
+        show_menu1();
 
-    if (choice == 1)
-    {
-        show_menu2();
+        // User input for main menu as an int
+        fscanf(stdin, "%d", &choice);
 
-        // User input for the columns to generate
-        int count_columns = select_columns(columns);
-
-        // User input for the number of columns generated in the files
-        select_row_count(&rowCount);
-
-        // User input for the name of the csv file
-        char filename[MAX_FILE_NAME];                               // Assuming a fixed file name size
-        select_output_filename(filename, MAX_FILE_NAME);
-
-        // Allocate memory for the amount of user we will generate
-        struct UserData *users = (struct UserData *) malloc(rowCount * sizeof(struct UserData *));
-
-        // Prepare the arrays to receive data from file
-        initialize_read_arrays();
-
-
-        int is_first_name_loaded = 0;
-        int is_last_name_loaded = 0;
-        int is_countries_loaded = 0;
-
-        for (int i = 0; i < rowCount; i++
-                )
+        if (choice == 1)
         {
-            // Creating the memory for a user at that position in users
-            create_user(&users[i]);
+            show_menu2();
 
-            for (int j = 0; j < count_columns; j++
+            // User input for the columns to generate
+            int count_columns = select_columns(columns);
+
+            // User input for the number of columns generated in the files
+            select_row_count(&rowCount);
+
+            // User input for the name of the csv file
+            char filename[MAX_FILE_NAME];                               // Assuming a fixed file name size
+            select_output_filename(filename, MAX_FILE_NAME);
+
+            // Allocate memory for the amount of user we will generate
+            struct UserData *users = (struct UserData *) malloc(rowCount * sizeof(struct UserData *));
+
+            // Prepare the arrays to receive data from file
+            initialize_read_arrays();
+
+
+            int is_first_name_loaded = 0;
+            int is_last_name_loaded = 0;
+            int is_countries_loaded = 0;
+
+            for (int i = 0; i < rowCount; i++
                     )
             {
+                // Creating the memory for a user at that position in users
+                create_user(&users[i]);
 
-                if (columns[j] == USER_ID)
+                for (int j = 0; j < count_columns; j++)
                 {
-                    users[i].user_id = generate_userID();
-                    printf("User ID: %d\n", users[i].user_id); //working
-                }
-                else if (columns[j] == FIRST_NAME)
-                {
-                    if (is_first_name_loaded == 0)
+
+                    if (columns[j] == USER_ID)
                     {
+                        users[i].user_id = generate_userID();
+                        printf("User ID: %d\n", users[i].user_id); //working
+                    }
+                    else if (columns[j] == FIRST_NAME)
+                    {
+                        if (is_first_name_loaded == 0)
+                        {
 /*
                         read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\first_names.txt", MAX_NAMES,
                                   arrayFirstName);
  */
-                        //For linux
-                        read_file("first_names.txt", MAX_NAMES, arrayFirstName);
-                        is_first_name_loaded = 1;
+                            //For linux
+                            read_file("first_names.txt", MAX_NAMES, arrayFirstName);
+                            is_first_name_loaded = 1;
+                        }
+                        strcpy(users[i].first_name, generate_element(arrayFirstName, MAX_NAMES));
+                        printf("First Name: %s\n", users[i].first_name); //working
                     }
-                    strcpy(users[i].first_name, generate_element(arrayFirstName, MAX_NAMES));
-                    printf("First Name: %s\n", users[i].first_name); //working
-                }
-                else if (columns[j] == LAST_NAME)
-                {
-                    if (is_last_name_loaded == 0)
+                    else if (columns[j] == LAST_NAME)
                     {
-                        /*
-                        read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES,
-                                  arrayLastName);
-                                  */
-                        // For linux
-                        read_file("last_names.txt", MAX_NAMES, arrayLastName);
-                        is_last_name_loaded = 1;
+                        if (is_last_name_loaded == 0)
+                        {
+                            /*
+                            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\last_names.txt", MAX_NAMES,
+                                      arrayLastName);
+                                      */
+                            // For linux
+                            read_file("last_names.txt", MAX_NAMES, arrayLastName);
+                            is_last_name_loaded = 1;
+                        }
+
+                        strcpy(users[i].last_name, generate_element(arrayLastName, MAX_NAMES));
+                        printf("Last Name: %s\n", users[i].last_name); //not working
+
                     }
-
-                    strcpy(users[i].last_name, generate_element(arrayLastName, MAX_NAMES));
-                    printf("Last Name: %s\n", users[i].last_name); //not working
-
-                }
-                else if (columns[j] == COUNTRY)
-                {
-                    if (is_countries_loaded == 0)
+                    else if (columns[j] == COUNTRY)
                     {
-                        /*
-                        read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_COUNTRIES,
-                                  arrayCountry);
-                                  */
-                        // For linux
-                        read_file("countries.txt", MAX_COUNTRIES, arrayCountry); //this works
-                        is_countries_loaded = 1;
+                        if (is_countries_loaded == 0)
+                        {
+                            /*
+                            read_file("C:\\Users\\Haya\\Documents\\Docker\\comp348\\countries.txt", MAX_COUNTRIES,
+                                      arrayCountry);
+                                      */
+                            // For linux
+                            read_file("countries.txt", MAX_COUNTRIES, arrayCountry); //this works
+                            is_countries_loaded = 1;
+                        }
+                        strcpy(users[i].country, generate_element(arrayCountry, MAX_COUNTRIES));
+                        printf("Country: %s\n", users[i].country); // not working
                     }
-                    strcpy(users[i].country, generate_element(arrayCountry, MAX_COUNTRIES));
-                    printf("Country: %s\n", users[i].country); // not working
-                }
-                else if (columns[j] == PHONE_NUMBER)
-                {
-                    strcpy(users[i].phone_number, generate_phone_number(phone_area_array, nbr_phone_area));
-                    printf("Phone Number: %s\n", users[i].phone_number); // working
-                }
-                else if (columns[j] == EMAIL)
-                {
-                    strcpy(users[i].email, generate_email(users[i].first_name, users[i].last_name, email_suffixes, 100)); //assume a max of 100 char
-                    printf("Email: %s\n", users[i].email); //half working
-                }
-                else if (columns[j] == SIN)
-                {
-                    strcpy(users[i].sin, generate_SIN(users, rowCount));
-                    printf("SIN: %s\n", users[i].sin); //not working
-                }
-                else if (columns[j] == PASSWORD)
-                {
-                    strcpy(users[i].password, generate_password(6, 16));
-                    printf("Password: %s\n", users[i].password); //working
+                    else if (columns[j] == PHONE_NUMBER)
+                    {
+                        strcpy(users[i].phone_number, generate_phone_number(phone_area_array, nbr_phone_area));
+                        printf("Phone Number: %s\n", users[i].phone_number); // working
+                    }
+                    else if (columns[j] == EMAIL)
+                    {
+                        strcpy(users[i].email, generate_email(users[i].first_name, users[i].last_name, email_suffixes, 100)); //assume a max of 100 char
+                        printf("Email: %s\n", users[i].email); //half working
+                    }
+                    else if (columns[j] == SIN)
+                    {
+                        strcpy(users[i].sin, generate_SIN(users, rowCount));
+                        printf("SIN: %s\n", users[i].sin); //not working
+                    }
+                    else if (columns[j] == PASSWORD)
+                    {
+                        strcpy(users[i].password, generate_password(6, 16));
+                        printf("Password: %s\n", users[i].password); //working
+                    }
                 }
             }
+            // Print or use the generated data as needed
+
+            // Sort before writing
+            sortedBy = columns[0]; // insert into global variable
+            qsort(users, rowCount, sizeof(struct UserData), compare_data);
+
+            // Write the file
+            write_file(strcat(filename, ".csv"), columns, users, rowCount, count_columns);
+
+            // TODO: Put free memory at the right place after adjusting
+            // free_memory(users, rowCount);
+
+            // Text to show results
+            summarize(columns, rowCount, filename, count_columns);
         }
-        // Print or use the generated data as needed
 
-        // Sort before writing
-        sortedBy = columns[0]; // insert into global variable
-        qsort(users, rowCount, sizeof(struct UserData), compare_data);
+        else if (choice == 2)
+        {
+            printf("Goodbye and thanks for using TableGen\n");
+            break;
+        }
 
-        // Write the file
-        write_file(strcat(filename, ".csv"), columns, users, rowCount, count_columns);
-
-        // TODO: Put free memory at the right place after adjusting
-        // free_memory(users, rowCount);
-    }
-
-    else if (choice == 2)
-    {
-        printf("Goodbye and thanks for using TableGen\n");
-    }
-
-    // TODO: WHY IS THIS NOT WORKING? C MAKES ME EXIT
-    show_continue();
+        printf("\nPress 'c' or 'C' to continue ");
+        scanf(" %c", &proceed);
+    } while (proceed == 'c' || proceed == 'C'); // HAD TO CHANGE THIS FROM WHAT WAS GIVEN IN THE QUESTION...
 
     // Terminate program successfully
     return 0;
@@ -356,16 +364,6 @@ int count_array_elements(char **arrayName)
     return nbr_elements;
 }
 
-void show_continue(){
-    char proceed;
-    printf("\nPress 'c' or 'C' to continue ");
-
-    do{
-        //MAIN CODE
-    scanf("%c", &proceed);
-    } while ( (proceed != 'c') && (proceed != 'C'));
-}
-
 int select_columns(int *columns)
 {
     int count = 0;                  // Initialize a count to keep track of the number of integers read, starts at 0
@@ -406,12 +404,26 @@ int select_columns(int *columns)
     return count;
 }
 
+void summarize(int *columns, int rowCount, char *filename, int count_columns) {
+    printf("Summary of properties:\n");
+    printf("  Columns: ");
+    for (int j = 0; j < count_columns; j++)
+    {
+        if (j == count_columns-1){
+            printf("%d",columns[j]);
+        }
+        else {
+            printf("%d,",columns[j]);
+        }
+    }
+    printf("\n  Row count: %d\n", rowCount);
+    printf("  File name:%s\n",filename);
+}
 
 /* TODO: What is left
  * test thing for all options (more than 3 rows does not work...)
  * clean code + document
  * figure out why qsort will not work in linux
- * exit with c
  * void summarize()
  * put linux file thingy
 */

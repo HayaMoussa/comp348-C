@@ -51,7 +51,7 @@ void create_user(struct UserData *user);
 void initialize_read_arrays();
 void select_output_filename(char *filename, int max_length);
 void select_row_count(int *rowCount);
-void show_continue();
+void summarize(int *columns, int rowCount, char *filename, int count_columns);
 
 
 #endif //COMP348_TABLEGEN_H
