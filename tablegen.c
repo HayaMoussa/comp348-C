@@ -5,29 +5,14 @@
 
 #include "tablegen.h"
 
-// Saved list
-// Create an instance of the UserData struct using pointers
-struct UserData *user_data;
-
 // All data read and saved will be stored in this list
 char **arrayFirstName;
 char **arrayLastName;
 char **arrayCountry;
 int sortedBy;
 
-// Arrays generated, not read so not needed. We will use the struct array instead.
-// Lists to write with (defining uninitialized)
-//int *arrayID;
-
-//char **arrayUserID;
-//char **arrayPhoneNumber;
-//char **arrayEmail;
-//char **arraySIN;
-//char **arrayPassword;
-
 int main(int argc, char **argv)
 {
-
     // Lists to use for generation
     char *email_suffixes[] = {"hotmail.com", "gmail.com", "yahoo.com", NULL};
     int nbr_suffix = count_array_elements(email_suffixes);
@@ -307,6 +292,7 @@ void show_menu2()
 
     printf("Enter column list (comma separated, no spaces):");
 }
+/*
 void free_memory(struct UserData *users, int rowCount)
 {
     // Free memory for struct arrays
@@ -347,6 +333,7 @@ void free_memory(struct UserData *users, int rowCount)
     }
     free(arrayCountry);
 }
+ */
 
 int count_array_elements(char **arrayName)
 {
@@ -411,7 +398,14 @@ void summarize(int *columns, int rowCount, char *filename, int count_columns) {
         }
     }
     printf("\n  Row count: %d\n", rowCount);
-    printf("  File name:%s\n",filename);
+
+    // remove the extension added earlier
+    if (strlen(filename) > 4) {
+        // Need to replace the last 4 characters with a null terminator
+        filename[strlen(filename) - 4] = '\0';
+    }
+
+    printf("  File name: %s\n",filename);
 }
 
 /* TODO: What is left
