@@ -443,8 +443,7 @@ void summarize(int *columns, int rowCount, char *filename, int count_columns) {
     }
 
     printf("  File name: %s\n\n",filename);
-    printf("Table written successfully to %s\n",filename);
-
+    printf("Table written successfully to %s\n",strcat(filename, ".csv"));
 }
 
 /* TODO: What is left
