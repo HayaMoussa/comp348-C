@@ -163,7 +163,7 @@ int main(int argc, char **argv)
             // Write the file
             write_file(strcat(filename, ".csv"), columns, users, rowCount, count_columns);
 
-            // TODO: Free memory is not working properly
+            // TODO: Free memory is not working properly.
             // free_memory(users, rowCount);
 
             // Summary test to show results

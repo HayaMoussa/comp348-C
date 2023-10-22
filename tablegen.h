@@ -55,4 +55,5 @@ void summarize(int *columns, int rowCount, char *filename, int count_columns);
 void free_memory(struct UserData *users,int rowCount);
 
 
+
 #endif //COMP348_TABLEGEN_H
